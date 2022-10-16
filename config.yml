@@ -1,0 +1,61 @@
+baseURL: "https://blog.luanrz.cn/"
+languageCode: "zh-cn"
+title: luanrz's blog
+paginate: 5
+theme: PaperMod
+
+# 右上角菜单项
+menu:
+  main:
+    - identifier: home
+      name: 首页
+      url: /
+      weight: 10
+    - identifier: search
+      name: 搜索
+      url: /search/ 
+      weight: 20      
+    - identifier: archives
+      name: 归档
+      url: /archives/
+      weight: 30
+    - identifier: categories
+      name: 分类
+      url: /categories/
+      weight: 40      
+    - identifier: tags
+      name: 标签
+      url: /tags/
+      weight: 50
+
+# 与Search搭配使用
+outputs:
+    home:
+        - HTML
+        - RSS
+        - JSON # 必填，不加此节点Search无法使用
+
+params:
+  defaultTheme: auto # 主题颜色：auto、dark、light
+  disableSpecial1stPost: true # 在Regular模式下禁用Home-Info区域，该开关在Home-Info模式和Profile模式无意义
+  hideSummary: true # 隐藏文章列表项的概述信息
+  hidemeta: true # 隐藏文章列表项的元数据，如：ReadingTime、WordCount等等
+  ShowReadingTime: true # 显示读完的预计时间（hidemeta为false才有意义）
+  ShowWordCount: true # 显示统计字数（hidemeta为false才有意义）
+  ShowCodeCopyButtons: true # 显示代码中的复制按钮
+  ShowPostNavLinks: true # 显示文章中上一篇和下一篇的链接
+  ShowBreadCrumbs: false # 显示面包屑导航
+  showtoc: false # 显示目录
+  tocopen: false # 显示的目录默认处于打开状态（showtoc为true才有意义）
+  label:
+    text: "luanrz's blog" # 左上角logo区域的文字，如果不填将以全局的title值为准
+
+  # Home-Info
+  homeInfoParams:
+    Title: "luanrz的个人博客" # Home-Info区域的标题
+    Content: "“心有所向，日服一日，必有精进”" # Home-Info区域的内容
+  socialIcons:
+    - name: bilibili # B站
+      url: "https://space.bilibili.com/31949997"
+    - name: github # Github
+      url: "https://github.com/luanrz"
