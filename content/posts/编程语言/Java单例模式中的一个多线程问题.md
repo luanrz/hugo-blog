@@ -250,7 +250,7 @@ public final class Singleton {
 非重复响应次数：95
 ```
 
-结果并没有和预期一样！可以看到，在调用`ThreadLocal`的`get()`方法时，返回了null。还记得[案例描述](#一、案例描述)中说的两个问题吗，我们的单例是懒汉式的，导致多线程下创建了多个实例，同时，我们的ThreadLocal不是static的，每个实例都持有独立的ThreadLocal变量，最终导致返回了null（此处挖坑，后面写一篇ThreadLocal原理的文章）！
+结果并没有和预期一样！可以看到，在调用`ThreadLocal`的`get()`方法时，返回了null。还记得[案例描述](#一案例描述)中说的两个问题吗，我们的单例是懒汉式的，导致多线程下创建了多个实例，同时，我们的ThreadLocal不是static的，每个实例都持有独立的ThreadLocal变量，最终导致返回了null（此处挖坑，后面写一篇ThreadLocal原理的文章）！
 
 通过以下两种方式可以解决这个问题：
 

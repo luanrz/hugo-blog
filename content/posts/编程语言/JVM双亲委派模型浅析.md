@@ -89,7 +89,7 @@ public class Launcher {
 }
 ```
 
-在实例化ExtClassLoader时，它的parent属性将被设置为null，这表示**ExtClassLoader的父类加载器为null**(这里的null有特殊意义，在后续[双亲委派的实现过程](#三、双亲委派的实现过程)源码部分将会介绍)。
+在实例化ExtClassLoader时，它的parent属性将被设置为null，这表示**ExtClassLoader的父类加载器为null**(这里的null有特殊意义，在后续[双亲委派的实现过程](#三双亲委派的实现过程)源码部分将会介绍)。
 
 在实例化AppClassLoader时，它的parent属性将被设置为ExtClassLoader，这表示**AppClassLoader的父类加载器为ExtClassLoader**。
 

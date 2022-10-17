@@ -10,19 +10,17 @@ tags:
 
 ## 一、常用数据结构一览
 
-| 数据结构 | 用途             |
-| -------- | ---------------- |
-| vector   | 动态数组         |
-| stack    | 先入后出的线性表 |
-| queue    | 先入先出的线性表 |
-| map      | 键值对元素集合   |
-| set      | 无序非重复集合   |
+| 数据结构          | 用途             |
+| ----------------- | ---------------- |
+| [vector](#vector) | 动态数组         |
+| [stack](#stack)   | 先入后出的线性表 |
+| [queue](#queue)   | 先入先出的线性表 |
+| [map](#map)       | 键值对元素集合   |
+| [set](#set)       | 无序非重复集合   |
 
 > 持续完善与更新中...
 
 <!--more-->
-
-{% tabs command %}
 
 <!-- tab vector -->
 
@@ -162,5 +160,3 @@ for (iterator = string_int_map.begin(); iterator != string_int_map.end(); iterat
 // TODO
 
 <!-- endtab -->
-
-{% endtabs %}

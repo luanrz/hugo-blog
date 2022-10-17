@@ -6,8 +6,9 @@ categories:
 - 应用软件
 tags: 
 - Linux
-description:  i3wm是Linux下的一款窗口管理器(Windowns Manager), 通常简称为i3. <br> 本文档基于Archlinux(其它发行版大同小异), 简单介绍了i3的常用软件与配置
 ---
+
+i3wm是Linux下的一款窗口管理器(Windowns Manager), 通常简称为i3。 本文档基于Archlinux(其它发行版大同小异), 简单介绍了i3的常用软件与配置。
 
 ## 安装
 

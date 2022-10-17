@@ -103,7 +103,7 @@ public ThreadPoolExecutor(int corePoolSize,
 
 也有，`最大并发数 = 核心线程容量 + 非核心线程容量 + 等待队列容量`。
 
-当设置完上述三个值后，线程池的处理上限也将基本确定。后续将按照`核心线程池 -> 等待队列 -> 非核心线程池`的顺序依次执行任务，有关线程池的内部逻辑，详见后文[ThreadPoolExecutor原理浅析](#三、ThreadPoolExecutor原理浅析)。
+当设置完上述三个值后，线程池的处理上限也将基本确定。后续将按照`核心线程池 -> 等待队列 -> 非核心线程池`的顺序依次执行任务，有关线程池的内部逻辑，详见后文[ThreadPoolExecutor原理浅析](#三threadpoolexecutor原理浅析)。
 
 一般建议直接使用`ThreadPoolExecutor`的构造方法来实例化线程池，这样更容易通过参数识别线程池的关键属性。当然，为了简单起见，也可以使用`Executors`的系列方法：`newFixedThreadPool()`、`newSingleThreadExecutor()`与`newScheduledThreadPool()`，下面以`newFixedThreadPool()`为例来初始化一个线程池：
 

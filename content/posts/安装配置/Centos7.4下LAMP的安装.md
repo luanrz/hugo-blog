@@ -6,8 +6,9 @@ categories:
 - 应用软件
 tags: 
 - Linux
-description:  Centos7.4下Apache.Mysql,PHP及phpMyAdmin的安装与配置
 ---
+
+Centos7.4下Apache.Mysql,PHP及phpMyAdmin的安装与配置
 
 ### Linux+Apache+MySQL+PHP安装总结（centos7.4）
 

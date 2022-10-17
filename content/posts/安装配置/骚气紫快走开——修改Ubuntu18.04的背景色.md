@@ -6,8 +6,9 @@ categories:
 - 操作系统
 tags: 
 - Linux
-description: 通过修改"GRUB界面","plymouth界面"以及"锁屏登陆界面", 来规避Ubuntu18.04的紫色背景
 ---
+
+通过修改"GRUB界面","plymouth界面"以及"锁屏登陆界面", 来规避Ubuntu18.04的紫色背景
 
 # GRUB界面
 

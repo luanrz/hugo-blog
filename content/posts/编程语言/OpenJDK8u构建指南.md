@@ -7,8 +7,9 @@ categories:
 tags:
 - Java
 - JVM
-description: 官方OpenJdk8u构建指南个人翻译版本<br>官方地址为<a href="http://hg.openjdk.java.net/jdk8u/jdk8u/file/120809c21ad7/README-builds.html">README-builds.html</a>
 ---
+
+官方OpenJdk8u构建指南个人翻译版本。官方地址为[README-builds.html](http://hg.openjdk.java.net/jdk8u/jdk8u/file/120809c21ad7/README-builds.html)
 
 # 介绍
 
@@ -34,20 +35,20 @@ description: 官方OpenJdk8u构建指南个人翻译版本<br>官方地址为<a 
     - [源码规范](#源码规范)
 - [构建](#构建)
     - [系统设置](#系统设置)
-        - [Linux](#Linux)
-        - [Solaris](#Solaris)
-        - [MacOSX](#MacOSX)
-        - [Windows](#Windows)
-    - [Configure](#Configure)
-    - [Make](#Make)
+        - [Linux](#linux)
+        - [Solaris](#solaris)
+        - [MacOSX](#macOSX)
+        - [Windows](#windows)
+    - [Configure](#configure)
+    - [Make](#make)
 - [测试](#测试)
 
-- [附录A：提示和技巧](#附录A：提示和技巧)
+- [附录A：提示和技巧](#附录a提示和技巧)
     - [常见问题解答](#常见问题解答)
     - [构建性能技巧](#构建性能技巧)
     - [故障排查](#故障排查)
-- [附录B：GNU-Make信息](#附录B：GNU-Make信息)
-- [附录C：构建环境](#附录C：构建环境)
+- [附录B：GNU-Make信息](#附录bgnu-make信息)
+- [附录C：构建环境](#附录c构建环境)
 
 # 使用Mercurial
 OpenJDK源码由版本控制系统 [Mercurial](http://mercurial.selenic.com/wiki/Mercurial) 维护，如果你还不熟悉 Mercurial ，请参阅 [Beginner Guides](http://mercurial.selenic.com/wiki/BeginnersGuides) 或参考 [Mercurial Book](http://hgbook.red-bean.com/) 。本书的前几章对“Mercurial是什么“以及“Mercurial如何工作”进行了出色的概述。

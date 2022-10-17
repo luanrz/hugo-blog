@@ -24,8 +24,6 @@ kubernetes环境至少需要以下前置条件：
 
 本地测试环境可以使用minikube创建**单节点**集群，生产环境可以使用docker创建**多节点**集群，下面将分别介绍这两种方式。
 
-{% tabs command %}
-
 <!-- tab 使用minikube创建单节点集群 -->
 
 minikube是一个入门级的单节点kubernetes集群，麻雀虽小，五脏俱全。
@@ -66,8 +64,6 @@ minikube是一个入门级的单节点kubernetes集群，麻雀虽小，五脏�
 
 <!-- endtab -->
 
-{% endtabs %}
-
 
 
 ## 二、部署应用
@@ -90,7 +86,7 @@ minikube是一个入门级的单节点kubernetes集群，麻雀虽小，五脏�
     kubectl create deployment kubernetes-bootcamp --image=gcr.io/2/kubernetes-bootcamp:v1
     ```
 
-    > 创建deployment时会自动创建一个包含对应容器的pod，一个deployment也可以有多个pod（后面[缩放应用](#五、缩放应用)章节将会介绍这种情况）
+    > 创建deployment时会自动创建一个包含对应容器的pod，一个deployment也可以有多个pod（后面[缩放应用](#五缩放应用)章节将会介绍这种情况）
     
     > 同时，pod是kubernetes管理的最小单元。一个工作节点（node）可以包含多个pod，一个pod可以包含多个容器
 
@@ -103,7 +99,7 @@ minikube是一个入门级的单节点kubernetes集群，麻雀虽小，五脏�
     kubectl get deployments
     ```
 
-    > 此时，deployment中的应用只允许集群内部的其它pod或者service访问，为了在外部能够访问，可以选择[暴露应用](#四、暴露应用)，也可以使用`proxy`
+    > 此时，deployment中的应用只允许集群内部的其它pod或者service访问，为了在外部能够访问，可以选择[暴露应用](#四暴露应用)，也可以使用`proxy`
 
 - **启用proxy**
 

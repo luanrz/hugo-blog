@@ -11,7 +11,7 @@ tags:
 
 Java锁(Lock)是实现Java线程安全的一种手段，它通过加锁和解锁的过程来实现线程间的同步，以保证多线程在竞争同一个公共资源时数据读写的正确性。
 
-本文将首先阐明[Lock在Java线程安全中的位置](#一、前言)，随后将简单介绍[`Lock`类之间的关系](#二、Lock类之间的关系)，最后将简单介绍Java锁的[抽象定义](#三、java锁的抽象定义)与[具体实现](#四、java锁的具体实现)。
+本文将首先阐明[Lock在Java线程安全中的位置](#一前言)，随后将简单介绍[`Lock`类之间的关系](#二lock类之间的关系)，最后将简单介绍Java锁的[抽象定义](#三java锁的抽象定义)与[具体实现](#四java锁的具体实现)。
 
 <!--more-->
 
@@ -116,7 +116,7 @@ if (lock.tryLock()) { // 尝试获取锁：成功
 
 ### （二）AQS类
 
-队列同步器`AbstractQueuedSynchronizer`(`AQS`)是Java锁的基础，后续即将介绍的[三种Java锁](#四、Java锁的具体实现)都有对应的`AQS`内部类实现。
+队列同步器`AbstractQueuedSynchronizer`(`AQS`)是Java锁的基础，后续即将介绍的[三种Java锁](#四java锁的具体实现)都有对应的`AQS`内部类实现。
 
 `AQS`中有两个关键的数据元素：
 
@@ -132,7 +132,7 @@ if (lock.tryLock()) { // 尝试获取锁：成功
 1. 加锁：`Lock.lock()` --> `AQS.acquire()` --> `AQS.tryAcquire()` --> xxx
 2. 解锁：`Lock.unlock()` --> `AQS.release()` --> `AQS.tryRelease()` --> xxx
 
-`Lock`实现类的加锁和解锁过程通过`AQS`类来实现，`Lock`与`AQS`共同组成了Java锁的抽象定义，为后面的[Java锁的具体实现](#四、Java锁的具体实现)做好了铺垫。
+`Lock`实现类的加锁和解锁过程通过`AQS`类来实现，`Lock`与`AQS`共同组成了Java锁的抽象定义，为后面的[Java锁的具体实现](#四java锁的具体实现)做好了铺垫。
 
 ## 四、Java锁的具体实现
 

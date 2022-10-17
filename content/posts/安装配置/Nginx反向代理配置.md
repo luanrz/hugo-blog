@@ -6,10 +6,10 @@ categories:
 - 应用软件
 tags: 
 - Linux
-description: 以PC机上的Tomcat环境与树莓派上的LNMP环境整合过程为例, 演示Nginx反向代理简单配置过程
 ---
 
-# Nginx反向代理配置
+以PC机上的Tomcat环境与树莓派上的LNMP环境整合过程为例, 演示Nginx反向代理简单配置过程
+
 > 整合PC机上的Tomcat环境与树莓派上的LNMP环境
 
 ## 一、启动Tomcat服务与Apache服务

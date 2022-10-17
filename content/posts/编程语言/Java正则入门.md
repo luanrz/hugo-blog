@@ -6,14 +6,15 @@ categories:
 - Java
 tags:
 - Java
-# description: 以String类中的匹配与替换为入口, 简单介绍Java正则匹配与正则替换
 ---
+
+以String类中的匹配与替换为入口, 简单介绍Java正则匹配与正则替换
 
 ## 一、前言
 
 正则表达式一般用于字符串的模式**匹配**与**替换**，Java通过Pattern类与Matcher类原生支持正则表达式。在此基础上，String类封装了正则的细节，提供了一种更便捷的正则操作的方式。
 
-本文将从String类说起，通过它的matches与replace系列方法，介绍[String的匹配与替换](#二、String匹配与替换)。随后，将介绍Java正则中的[Pattern与Matcher](#三、Pattern与Matcher)两大核心类的基本使用方法。最后，将从[String类源码](#四、String正则源码分析)层面，简单分析String类的正则匹配和正则替换是如何通过Pattern类和Matcher类实现的。
+本文将从String类说起，通过它的matches与replace系列方法，介绍[String的匹配与替换](#二string匹配与替换)。随后，将介绍Java正则中的[Pattern与Matcher](#三pattern与matcher)两大核心类的基本使用方法。最后，将从[String类源码](#四string正则源码分析)层面，简单分析String类的正则匹配和正则替换是如何通过Pattern类和Matcher类实现的。
 
 有关正则表达式的前置知识介绍，请参照本文[附录](#附录)中的[正则表达式通用知识](#正则表达式通用知识)。
 
@@ -71,7 +72,7 @@ String newString4 = targetString.replaceFirst(regex,"<Name>Violet.Evergarden</Na
 
 ## 三、Pattern与Matcher
 
-Pattern与Matcher是Java支持正则表达式的两大核心类，上述[String匹配与替换](#二、String匹配与替换)中的正则匹配与正则替换在底层都是通过Pattern与Matcher来实现的，具体实现过程请参见[String正则源码分析](#四、String正则源码分析)。
+Pattern与Matcher是Java支持正则表达式的两大核心类，上述[String匹配与替换](#二string匹配与替换)中的正则匹配与正则替换在底层都是通过Pattern与Matcher来实现的，具体实现过程请参见[String正则源码分析](#四string正则源码分析)。
 
 一个Pattern与Matcher的基本使用方法的示例如下：
 
@@ -121,7 +122,7 @@ public static boolean matches(String regex, CharSequence input) {
 }
 ```
 
-可以发现里面的内容与上一节[Pattern与Matcher](#三、Pattern与Matcher)中的使用示例大同小异：首先根据正则表达式实例化Pattern对象，然后根据Pattern对象与目标字符串实例化Matcher对象，最后调用Matcher对象的matches方法。最终起作用的正是`Matcher`对象的`matches`方法。
+可以发现里面的内容与上一节[Pattern与Matcher](#三pattern与matcher)中的使用示例大同小异：首先根据正则表达式实例化Pattern对象，然后根据Pattern对象与目标字符串实例化Matcher对象，最后调用Matcher对象的matches方法。最终起作用的正是`Matcher`对象的`matches`方法。
 
 
 ### （二）String正则替换源码分析
@@ -139,7 +140,7 @@ public String replaceAll(String regex, String replacement) {
 
 ```
 
-String的`replace`系列方法也很简单：首先调用`Pattern.compile(regex)`实例化Pattern对象，然后调用Pattern对象的`matcher(this)`实例化Matcher对象（此处的this就是当前字符串)，最后调用Matcher对象的`replaceFirst`与`replaceAll`方法。与[String的正则匹配实现方法](#（一）String正则匹配源码分析)类似，最终起作用的正是`Matcher`对象的`replaceFirst`与`replaceAll`方法。
+String的`replace`系列方法也很简单：首先调用`Pattern.compile(regex)`实例化Pattern对象，然后调用Pattern对象的`matcher(this)`实例化Matcher对象（此处的this就是当前字符串)，最后调用Matcher对象的`replaceFirst`与`replaceAll`方法。与[String的正则匹配实现方法](#一string正则匹配源码分析)类似，最终起作用的正是`Matcher`对象的`replaceFirst`与`replaceAll`方法。
 
 本小节简单分析了如何通过Pattern类和Matcher类来实现String正则匹配与正则替换，具体实现细节可以继续往下深挖，受限于篇幅，此处就不介绍了（其实是因为我是个懒狗，还没看完，挖个坑，后面有时间补上）。
 
