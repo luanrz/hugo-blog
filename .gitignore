@@ -1,3 +1,7 @@
-
+# Hugo
 .hugo_build.lock
+public/
+
+# IDE
 .idea/
+.vscode/
