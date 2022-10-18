@@ -50,7 +50,7 @@ draft: true
 
 ```shell
 git submodule add --depth=1 https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod
-git submodule update --init --recursive # 仅在后续重新拉取hugodemo项目时，才需要同步跟新此git模块
+git submodule update --init --recursive # 仅在后续重新拉取hugodemo项目时，才需要执行此命令
 ```
 
 ### （四）启动Hugo
@@ -58,19 +58,19 @@ git submodule update --init --recursive # 仅在后续重新拉取hugodemo项目
 ```shell
 hugo server -t PaperMod -D
 ```
-server指令标识启动Hugo服务。
+`server`指令表示启动Hugo服务。
 
-`-t`(`--theme`)指定了主题名，后续也可以在配置文件中指定主题名为`PaperMod`。
+`-t`(`--theme`)指定了主题名，后续也可以在配置文件中指定主题。
 
 `-D`(`--buildDrafts`)表示编译文章头部的`draft`标识为`true`的草稿文章，刚刚创建的hello.md就是一篇草稿文章。
 
 ### （五）访问站点
 
-在终端执行：`curl http://localhost:1313`，或在浏览器中访问`http://localhost:1313`，即可看到应用启动成功，刚刚写的第一篇hello文章显示在了首页。
+在终端执行`curl http://localhost:1313`，或在浏览器中访问`http://localhost:1313`，即可看到应用启动成功，刚刚写的第一篇hello文章显示在了首页。
 
 ## 三、配置PaperMod主题
 
-未经配置的PaperMod还不太完整，下面将简单介绍PaperMod主题的配置过程。
+未经配置的PaperMod页面还不太完整，下面将简单介绍PaperMod主题的配置过程。
 
 首先，将根目录的`config.toml`重命名为`config.yml`，并将其中的`=` 换成`:`。随后，继续编辑`config.yml`，完整的配置文件如下：
 
@@ -169,7 +169,7 @@ placeholder: "输入关键字搜索文章"
 ---
 ```
 
-最后，再次重启项目，可以看到看到首页已经焕然一新。
+最后，再次重启项目，可以看到首页已经焕然一新。
 
 ## 四、Hexo的迁移建议
 
@@ -181,20 +181,62 @@ placeholder: "输入关键字搜索文章"
 
 同时，Hugo不支持Hexo的Tabs标签语法，可以删掉对应的Tabs标签或使用hugo对应Shortcodes语法。
 
-### （二）文章内部超链接
+### （二）内部超链接
 
 Hugo中Markdown对应的标题生成超链接锚点时，会执行下述操作：将大写字母替换成小写字母、将`、`与`（）`等符号去掉。
 
-以`## （一）PaperMod`为例，它的超链接锚点会变成`一papermod`，如果要在文章内部引用它，可以使用`[paper](一papermod)`
+以`## （一）PaperMod`为例，它的超链接锚点会变成`一papermod`，如果要在文章内部引用它，可以使用`[The PaperMod](#一papermod)`
 
 ### （三）支持PlantUML
 
 PlantUML是一种文本画图的工具，Hexo的Next主题原生支持PlantUML。Hugo现在还没有原生支持PlantUML，根据其github的讨论记录，可能后续会支持。
 
-现在的解决方案是自定义js，将PlantUML文本传输到`http://plantuml.com/`在线生成图片并回写到页面。篇幅受限，具体实现方法就不展示了。
+现在的解决方案是自定义js，将PlantUML文本传输到`http://plantuml.com/`在线生成图片并回写到页面。可参考下述自定义脚本：
 
+```javascript
+<!-- 引入自定义脚本，渲染plantuml（此种方式引入脚本不太优雅，后续寻找更合适的方式） -->
+<!-- 参见 https://ttys3.dev/post/add-plantuml-support-to-hugo/ 与 https://mogeko.me/posts/zh-cn/083/ -->
+<script>
+const loadScript = (url, onloadFunction) => {
+    var newScript = document.createElement("script");
+    newScript.onerror = (oError) => {
+        throw new URIError("The script " + oError.target.src + " didn't load correctly.");
+    };
+    if (onloadFunction) { newScript.onload = onloadFunction; }
+    document.head.insertAdjacentElement('beforeend', newScript);
+    newScript.src = url;
+}
+
+const loadPlantUMLOnNeed = () => {
+    let plantumlPrefix = "language-plantuml";
+
+    if (document.querySelectorAll("[class^=" + plantumlPrefix + "]").length > 0) {
+        loadScript('https://cdn.jsdelivr.net/gh/jmnote/plantuml-encoder@1.2.4/dist/plantuml-encoder.min.js', () => {
+            (function () {
+                Array.prototype.forEach.call(document.querySelectorAll("[class^=" + plantumlPrefix + "]"), function (code) {
+                    let image = document.createElement("IMG");
+                    image.loading = 'lazy'; // Lazy loading
+                    image.src = 'http://www.plantuml.com/plantuml/svg/~1' + plantumlEncoder.encode(code.innerText);
+                    code.parentNode.insertBefore(image, code);
+                    code.style.display = 'none';
+                });
+            })();
+
+            console.log("PlantUML init done");
+        })
+    }
+}
+
+window.addEventListener('load', function (event) {
+    // load PlantUML
+    loadPlantUMLOnNeed();
+})
+</script>
+```
 
 > 参考文档
 
 1. [Hugo官方入门手册](https://gohugo.io/getting-started/quick-start/)
 2. [PaperMod安装教程](https://adityatelange.github.io/hugo-PaperMod/posts/papermod/papermod-installation/)
+3. [给Hugo博客添加PlantUML支持](https://ttys3.dev/post/add-plantuml-support-to-hugo/)
+4. [在Hugo博客上使用PlantUML](https://mogeko.me/posts/zh-cn/083/)
