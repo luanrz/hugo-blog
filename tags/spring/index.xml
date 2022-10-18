@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Spring on luanrz's blog</title><link>https://blog.luanrz.cn/tags/spring/</link><description>Recent content in Spring on luanrz's blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 31 Mar 2022 09:31:48 +0000</lastBuildDate><atom:link href="https://blog.luanrz.cn/tags/spring/index.xml" rel="self" type="application/rss+xml"/><item><title>Spring的7个使用场景</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/spring%E7%9A%847%E4%B8%AA%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</link><pubDate>Thu, 31 Mar 2022 09:31:48 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/spring%E7%9A%847%E4%B8%AA%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</guid><description>&lt;p>&lt;a href="https://spring.io">Spring官网&lt;/a>中描述了Spring能做的7件事，如下所示：&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-plantuml" data-lang="plantuml">@startmindmap
+* Spring
+* Microservices（微服务）
+* Reactive（响应式）
+* Cloud（云）
+* Web apps（网页应用）
+* Serverless（无服务器）
+* Event Driven（事件驱动）
+* Batch（批处理）
+@endmindmap
+&lt;/code>&lt;/pre>&lt;p>下面将简单介绍各场景的概念与其关联的项目。&lt;/p></description></item></channel></rss>

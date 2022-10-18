@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>操作系统 on luanrz's blog</title><link>https://blog.luanrz.cn/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link><description>Recent content in 操作系统 on luanrz's blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 03 Sep 2020 13:32:00 +0000</lastBuildDate><atom:link href="https://blog.luanrz.cn/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.xml" rel="self" type="application/rss+xml"/><item><title>骚气紫快走开——修改Ubuntu18.04的背景色</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E9%AA%9A%E6%B0%94%E7%B4%AB%E5%BF%AB%E8%B5%B0%E5%BC%80%E4%BF%AE%E6%94%B9ubuntu18.04%E7%9A%84%E8%83%8C%E6%99%AF%E8%89%B2/</link><pubDate>Thu, 03 Sep 2020 13:32:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E9%AA%9A%E6%B0%94%E7%B4%AB%E5%BF%AB%E8%B5%B0%E5%BC%80%E4%BF%AE%E6%94%B9ubuntu18.04%E7%9A%84%E8%83%8C%E6%99%AF%E8%89%B2/</guid><description>通过修改&amp;quot;GRUB界面&amp;quot;,&amp;ldquo;plymouth界面&amp;quot;以及&amp;quot;锁屏登陆界面&amp;rdquo;, 来规避Ubuntu18.04的紫色背景
+GRUB界面 sudo cp pictrue.jpg /boot/grub
+cd /etc/default/
+sudo cp grub grub.bak
+sudo vim grub
+GRUB_GFXMODE=1366x768 sudo update-grub
+plymouth界面 cd /usr/share/plymouth/themes/ubuntu-logo
+sudo cp ubuntu-logo.script ubuntu-logo.script.bak
+sudo vim ubuntu-logo.script
+Window.SetBackgroundTopColor (0.00, 0.00, 0.00); Window.SetBackgroundBottomColor (0.00, 0.00, 0.00); 锁屏登陆界面 cd /usr/share/gnome-shell/theme/
+sudo cp ubuntu.css ubuntu.css.bak
+sudo vim ubuntu.css
+#lockDialogGroup { background: black; }</description></item><item><title>ArchLinux安装（二）</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/archlinux%E5%AE%89%E8%A3%85%E4%BA%8C/</link><pubDate>Wed, 11 Dec 2019 22:33:01 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/archlinux%E5%AE%89%E8%A3%85%E4%BA%8C/</guid><description>ArchLinux安装第二部分, 包括图形化界面与实用软件的安装及实用配置。本文档参考自ArchLinux官方Wiki的General recommendations。
+四、后续安装 安装图形化界面 pacman -S xf86-video-intel （安装显卡驱动）
+pacman -S xorg xfce4 xfce4-goodies sddm （安装桌面桌面环境与桌面管理器）
+pacman -S network-manager-applet (安装NetworkManager插件)
+systemctl enable sddm （开机自动启动sddm）
+systemctl enable NetworkManager （开机自动启动NetworkManager）
+systemctl disable netctl （取消开机自动启动netctl）
+netctl和networkmanager互斥！
+新建用户并赋予其sudo权限 useradd -m -G wheel luanrzh （创建用户luanrzh）
+passwd luanrzh （修改luanrzh密码）
+pacman -S sudo（安装sudo）
+vim /etc/sudoers （配置sudo）
+创建交换文件 fallocate -l 4G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+vim /etc/fstab
+安装yaourt vim /etc/pacman.conf
+------------------------------ [archlinuxcn] SigLevel = Optional TrustAll Server = http://repo.</description></item><item><title>ArchLinux安装（一）</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/archlinux%E5%AE%89%E8%A3%85%E4%B8%80/</link><pubDate>Wed, 11 Dec 2019 22:33:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/archlinux%E5%AE%89%E8%A3%85%E4%B8%80/</guid><description>ArchLinux安装第一部分, 只包含基础环境的安装, 不包括桌面环境。本文档参考自ArchLinux官方Wiki的Installation guide。
+一、硬盘分区 创建引导分区和根分区 fdisk /dev/sda （进入第一个硬盘）
+g （如果是全新硬盘，使用g创建新的gpt分区表）
+n 回车 回车 +500M （创建新的分区作为引导分区，大小为500M）
+t 1 （修改分区类型为EFI System）
+n 回车 回车 +10G （创建新的分区作为根分区，大小为10G）
+p （打印所有更改）
+w （保存所有更改）
+格式化分区 mkfs.fat -F32 /dev/sda1 （格式化引导分区）
+mkfs.ext4 /dev/sda2 （格式化根分区）
+挂载分区 mount /dev/sda2 /mnt （挂载根分区到airrootfs下的mnt目录）
+mkdir /mnt/boot （在airrootfs下的mnt目录创建boot子目录）
+mount /dev/sda2 /mnt/boot （挂载引导分区到airrootfs下的mnt/boot目录）
+（注意！！！chroot之前，所有的操作均是在内存中进行，airrootfs挂载为系统根目录，chroot在后面有介绍）
+二、联网安装 联网 wifi-menu （使用无线局域网）
+dhcp （使用自动拨号）
+（注意！使用手机开热点时，电脑可能不能正常解析DNS服务器，需要手动设置。）
+vim /etc/resolv.conf
+-------------------------------------------- nameserver 114.114.114.114） -------------------------------------------- 选择镜像源 vim /etc/pacman.d/mirrolist （修改镜像源）
+-------------------------------------------------- Server = http://mirrors.</description></item><item><title>树莓派配置</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E6%A0%91%E8%8E%93%E6%B4%BE%E9%85%8D%E7%BD%AE/</link><pubDate>Wed, 12 Dec 2018 21:57:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E6%A0%91%E8%8E%93%E6%B4%BE%E9%85%8D%E7%BD%AE/</guid><description>树莓派配置, 包括常用开发环境及部分实用工具的安装与配置
+安装raspbian系统至SD卡 略
+选择国内仓库源 sudo sed -i &amp;#39;s#://raspbian.raspberrypi.org#s://mirrors.ustc.edu.cn/raspbian#g&amp;#39; /etc/apt/sources.list sudo sed -i &amp;#39;s#://archive.raspberrypi.org/debian#s://mirrors.ustc.edu.cn/archive.raspberrypi.org/debian#g&amp;#39; /etc/apt/sourceslist.d/raspi.list 参见链接树莓派—raspbian软件源（全）
+使用VNC协议无线连接桌面 系统已经默认安装RealVNC,直接启动即可
+vncserver 使用RDP协议无线连接桌面 sudo apt install tightvncserver xrdp 安装tightvncserver将会自动卸载realvnc
+安装phpMyAdmin环境 安装nginx,php-fpm,mairadb
+sudo apt install nginx php-fpm mariadb-server 配置数据库
+安全设置 sudo mysql_secure_installation 登录 mysql -uroot -p 报错，错误信息为：ERROR 1698 (28000): Access denied for user &amp;lsquo;root&amp;rsquo;@&amp;rsquo;localhost&amp;rsquo;
+解决方案：
+sudo mysql -uroot -p update mysql.user set authentication_string=PASSWORD(&amp;#39;root&amp;#39;), plugin=&amp;#39;mysql_native_password&amp;#39; where user=&amp;#39;root&amp;#39;; flush privileges; 配置nginx以支持php
+sudo vim /etc/nginx/sites-available/default ----------------------------------- location / { index index.</description></item></channel></rss>

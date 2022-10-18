@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Linux on luanrz's blog</title><link>https://blog.luanrz.cn/tags/linux/</link><description>Recent content in Linux on luanrz's blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 04 Jul 2022 10:28:27 +0000</lastBuildDate><atom:link href="https://blog.luanrz.cn/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>远程开发的4种解决方案</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E7%9A%844%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</link><pubDate>Mon, 04 Jul 2022 10:28:27 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E7%9A%844%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</guid><description>&lt;p>出于安全或性能等原因，公司将开发环境部署在了内网云环境中，内网云环境与外网完全隔离，且所有的开发环境资源（如数据库、Redis等）只能通过内网云环境访问，本地物理机无法直接访问这些测试资源，只能通过RDP协议间接访问内网云环境中的桌面，这给开发工作带来了极大的不便。为了能够直接在本地物理机进行开发，接下来将介绍4种远程开发的方法：&lt;/p>
+&lt;ol>
+&lt;li>使用nginx反向代理持续暴露远程资源&lt;/li>
+&lt;li>使用ssh转发临时暴露资源&lt;/li>
+&lt;li>使用Microsoft的Visual-Studio-Code远程开发工具&lt;/li>
+&lt;li>使用Jetbrains的Projector或Gateway远程开发工具&lt;/li>
+&lt;/ol></description></item><item><title>常用包管理器配置</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%B8%B8%E7%94%A8%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 16 Jul 2021 09:39:43 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%B8%B8%E7%94%A8%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8%E9%85%8D%E7%BD%AE/</guid><description>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>包管理器&lt;/th>
+&lt;th>适用语言&lt;/th>
+&lt;th>主配置文件路径&lt;/th>
+&lt;th>官方首页&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;a href="#npm">npm&lt;/a>&lt;/td>
+&lt;td>NodeJs&lt;/td>
+&lt;td>~/.npmrc&lt;/td>
+&lt;td>&lt;a href="https://www.npmjs.com/">www.npmjs.com&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#pip">pip&lt;/a>&lt;/td>
+&lt;td>Python&lt;/td>
+&lt;td>~/.config/pip/pip.conf&lt;/td>
+&lt;td>&lt;a href="https://pypi.org/">pypi.org&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#docker">docker&lt;/a>&lt;/td>
+&lt;td>-&lt;/td>
+&lt;td>/etc/docker/daemon.json&lt;/td>
+&lt;td>&lt;a href="https://www.docker.com/">www.docker.com&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#maven">maven&lt;/a>&lt;/td>
+&lt;td>Java&lt;/td>
+&lt;td>~/.m2/settings.xml&lt;/td>
+&lt;td>&lt;a href="https://maven.apache.org/">maven.apache.org&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#gradle">gradle&lt;/a>&lt;/td>
+&lt;td>Java&lt;/td>
+&lt;td>-&lt;/td>
+&lt;td>&lt;a href="https://gradle.org/">gradle.org&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#go">go&lt;/a>&lt;/td>
+&lt;td>go&lt;/td>
+&lt;td>~/.config/go/env&lt;/td>
+&lt;td>&lt;a href="https://golang.google.cn/">golang.google.cn&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>命令备忘录：GDB</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95gdb/</link><pubDate>Fri, 02 Apr 2021 09:50:12 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95gdb/</guid><description>编译 gcc Hello.cpp 生成可执行文件a.out
+gcc -o Hello.o Hello.cpp 生成可执行文件Hello.o
+gcc -g -o Hello.o Hello.cpp 生成可调试的可执行文件Hello.o
+调试 gdb Hello.o
+常用GDB命令 break ：新增断点。后接一个参数，表示在指定位置增加断点，参数格式为：[源文件名:]&amp;lt;方法名&amp;gt; | [源文件名:]&amp;lt;行数&amp;gt;
+delete：删除断点。后接零个参数，表示删除所有断点。后接一个参数，表示删除指定序号的断点，参数格式为：&amp;lt;序号&amp;gt;
+step：往下执行语句，会进入函数。后接零个参数，表示往下执行一条语句。后接一个参数，表示往下执行指定数目的多条语句，参数格式为：&amp;lt;向下行数&amp;gt;
+next：往下执行语句，不会进入函数。参数规范与step类似
+continue：继续运行
+finish：运行至当前函数返回后退出
+list：查看代码
+frame：查看帧栈
+backstrace：查看整个调用栈
+info ：查看信息。后接一个参数，参数格式为：&amp;lt;args | locals&amp;gt;，args表示查看函数参数，locals表示查看局部变量
+print：打印值。</description></item><item><title>命令备忘录：Git</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95git/</link><pubDate>Fri, 02 Apr 2021 09:50:12 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95git/</guid><description>删除远程分支 git push origin --del rzluan-orderchange/ndc_xml_api_v3
+克隆指定分支到指定文件夹 git clone -b [branch_name] [git_url] [dir_path]
+变更统计 git log --author=rzluan --after=&amp;#34;2019-11-01 00:00:00&amp;#34; --before=&amp;#34;2019-11-30 23:59:59&amp;#34; --name-only | grep &amp;#39;^src/*&amp;#39; | sort | uniq git log --author=rzluan --after=&amp;#34;2019-11-01 00:00:00&amp;#34; --before=&amp;#34;2019-11-30 23:59:59&amp;#34; --numstat | grep &amp;#34;src&amp;#34; | awk &amp;#39;{a[$3]+=$1;b[$3]+=$2}END{for(j in a) print j,&amp;#34;代码变更&amp;#34;(a[j]+b[j])&amp;#34;行&amp;#34;}&amp;#39; git log --author=rzluan --after=&amp;#34;2019-11-01 00:00:00&amp;#34; --before=&amp;#34;2019-11-30 23:59:59&amp;#34; --numstat | grep &amp;#34;src&amp;#34; | awk &amp;#39;{a[$3]+=($1+$2)}END{for(j in a) b+=a[j]} END{print &amp;#34;总行数&amp;#34;,b}&amp;#39; 修改commit记录 修改提交时间：git commit --amend --date=&amp;quot;May 8 12:00:30 2020 +0800&amp;quot;</description></item><item><title>命令备忘录：IDEA</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95idea/</link><pubDate>Fri, 02 Apr 2021 09:50:12 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95idea/</guid><description>Editor Basics Actions Ctrl + Shift + A
+Select Ctrl + Shift + → Select a word
+Ctrl + Shift + ← Select a word
+Ctrl + W Extend the select
+Ctrl + Shift + W Shrink the select
+Ctrl + A Select whole file
+Comment Line Ctrl + / Comment out or uncomment line(s)
+Delete Line Ctrl + Y Delete line(s)
+Ctrl + Z Restore the deleted line(s)
+Duplicate Ctrl + D Duplicate line(s)</description></item><item><title>命令备忘录：Java</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95java/</link><pubDate>Fri, 02 Apr 2021 09:50:12 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95java/</guid><description>Java序列化 new ObjectOutputStream(new FileOutputStream(&amp;quot;resp&amp;quot;)).writeObject(resp);
+配置VM参数&amp;quot;javaagent&amp;quot;以支持切面编程 - javaagent:/home/luanrzh/.m2/repository/org/aspectj/aspectjweaver/1.9.4/aspectjweaver-1.9.4.jar 启用远程调试 java -jar \ -Dserver.port=8080 \ -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8081 \ parent-0.0.1-SNAPSHOT.jar jasypt加密解密 java -cp jasypt-1.9.2.jar org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI input=123456 password=1234-1234-1234-1234 algorithm=PBEWithMD5AndDES java -cp jasypt-1.9.2.jar org.jasypt.intf.cli.JasyptPBEStringDecryptionCLI input=&amp;#34;jvp0W0qUkv0WmG/JzwyUTA==&amp;#34; password=1234-1234-1234-1234 algorithm=PBEWithMD5AndDES</description></item><item><title>命令备忘录：Linux</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95linux/</link><pubDate>Fri, 02 Apr 2021 09:50:12 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95linux/</guid><description>会话管理——使用screen恢复掉线的shell会话 screen -S myScreen
+screen -r myScreen
+显示当前目录所占用的磁盘空间 du -h --max-depth=1
+访问NFS服务 sudo pacman -S core/nfs-utils #ArchLinux下安装nfs-utils，不然没有showmount命令
+showmount -e 192.168.1.105 #显示指定IP上挂载的卷
+sudo mount -t nfs -o proto=tcp,nolock 192.168.1.105:/volume1/homes homes/ #开始挂载
+访问SMB服务 sudo pacman -S smbclient #安装
+smbclient -L 192.168.0.100 -U username%password # 显示共享目录
+smbclient //192.168.0.100/directory -U username%password # 进入上述共享目录中的directory目录
+一键删除所有项目下的target find . -name target | awk '{print &amp;quot;rm -rf &amp;quot;$1}' | sh
+扫描局域网所有IP与端口 nmap -sP 192.168.1.0/24
+nmap -A 192.168.1.100
+压缩与解压 压缩 解压 tar.</description></item><item><title>命令备忘录：Vim</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95vim/</link><pubDate>Fri, 02 Apr 2021 09:50:12 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95vim/</guid><description>浏览 ctrl-f 向下一翻页（f = forword ） ctrl-b 向上一翻页（b = backward） ctrl-d 向下翻半页（d = down） ctlr-u 向上翻半页（u = up） ctrl-e 向下滚一行 ctrl-y 向上滚一行 zz 让光标所在的行居屏幕中央 zt 让光标所在的行居屏幕最上一行 t=top zb 让光标所在的行居屏幕最下一行 b=bottom 编辑 u 撤销 Ctrl-r 恢复撤销 替换 命令备忘录：Vim
+:%s/a/b/g 将所有的a替换为b</description></item><item><title>i3wm配置</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/i3wm%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 04 Sep 2020 16:21:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/i3wm%E9%85%8D%E7%BD%AE/</guid><description>i3wm是Linux下的一款窗口管理器(Windowns Manager), 通常简称为i3。 本文档基于Archlinux(其它发行版大同小异), 简单介绍了i3的常用软件与配置。
+安装 sudo pacman -S i3-gaps polybar rofi feh picom yay i3lock-fancy-rapid 序号 软件 功能 01 i3-gaps i3-wm的增强版，支持间隙等特性 02 polybar 状态栏，i3-bar的替代者 03 rofi 启动菜单，dmenu的替代者 04 feh 设置桌面壁纸 05 picom 透明支持 06 i3lock-fancy-rapid 锁屏，i3lock的升级版，支持背景虚化 配置 配置polybar 生成polybar配置文件 mkdir ~/.config/polybar cp /usr/share/doc/polybar/config ~/.config/polybar/ 编辑polybar配置文件 vim ~/.config/polybar/config ------------------------------------------ [bar/example] ... border-size = 0 ... modules-left = i3 modules-center = date modules-right = memory cpu battery wlan eth ... [module/wlan] type = internal/network interface = wlp0s20f3 .</description></item><item><title>骚气紫快走开——修改Ubuntu18.04的背景色</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E9%AA%9A%E6%B0%94%E7%B4%AB%E5%BF%AB%E8%B5%B0%E5%BC%80%E4%BF%AE%E6%94%B9ubuntu18.04%E7%9A%84%E8%83%8C%E6%99%AF%E8%89%B2/</link><pubDate>Thu, 03 Sep 2020 13:32:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E9%AA%9A%E6%B0%94%E7%B4%AB%E5%BF%AB%E8%B5%B0%E5%BC%80%E4%BF%AE%E6%94%B9ubuntu18.04%E7%9A%84%E8%83%8C%E6%99%AF%E8%89%B2/</guid><description>通过修改&amp;quot;GRUB界面&amp;quot;,&amp;ldquo;plymouth界面&amp;quot;以及&amp;quot;锁屏登陆界面&amp;rdquo;, 来规避Ubuntu18.04的紫色背景
+GRUB界面 sudo cp pictrue.jpg /boot/grub
+cd /etc/default/
+sudo cp grub grub.bak
+sudo vim grub
+GRUB_GFXMODE=1366x768 sudo update-grub
+plymouth界面 cd /usr/share/plymouth/themes/ubuntu-logo
+sudo cp ubuntu-logo.script ubuntu-logo.script.bak
+sudo vim ubuntu-logo.script
+Window.SetBackgroundTopColor (0.00, 0.00, 0.00); Window.SetBackgroundBottomColor (0.00, 0.00, 0.00); 锁屏登陆界面 cd /usr/share/gnome-shell/theme/
+sudo cp ubuntu.css ubuntu.css.bak
+sudo vim ubuntu.css
+#lockDialogGroup { background: black; }</description></item><item><title>Termux配置</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/termux%E9%85%8D%E7%BD%AE/</link><pubDate>Wed, 11 Dec 2019 22:33:02 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/termux%E9%85%8D%E7%BD%AE/</guid><description>Termux是Android下的一款Linux环境, 本文简要介绍了Termux的部分实用配置
+Termux初始配置 允许外部存储 termux-setup-storage
+修改termux镜像源 export EDITOR=vi &amp;amp;&amp;amp; apt edit-sources
+----------------------------------------------------------- http://mirrors.tuna.tsinghua.edu.cn/termux ----------------------------------------------------------- apt update &amp;amp;&amp;amp; upgrade
+安装ubuntu 下载 ubuntu pkg install wget &amp;amp;&amp;amp; wget https://raw.githubusercontent.com/Neo-Oli/termux-ubuntu/master/ubuntu.sh &amp;amp; bash ubuntu.sh
+修改dns vi ~/ubuntu-fs/etc/resolv.conf
+-------------------------------------- nameserver 114.114.114.114 -------------------------------------- 修改ubuntu镜像源 vi ~/ubuntu-fs/etc/apt/source.list
+-------------------------------------------------------------------------------------------------- # 默认注释了源码仓库，如有需要可自行取消注释 deb https://mirrors.ustc.edu.cn/ubuntu-ports/ xenial main restricted universe multiverse # deb-src https://mirrors.ustc.edu.cn/ubuntu-ports/ xenial main main restricted universe multiverse deb https://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse # deb-src https://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse deb https://mirrors.</description></item><item><title>ArchLinux安装（二）</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/archlinux%E5%AE%89%E8%A3%85%E4%BA%8C/</link><pubDate>Wed, 11 Dec 2019 22:33:01 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/archlinux%E5%AE%89%E8%A3%85%E4%BA%8C/</guid><description>ArchLinux安装第二部分, 包括图形化界面与实用软件的安装及实用配置。本文档参考自ArchLinux官方Wiki的General recommendations。
+四、后续安装 安装图形化界面 pacman -S xf86-video-intel （安装显卡驱动）
+pacman -S xorg xfce4 xfce4-goodies sddm （安装桌面桌面环境与桌面管理器）
+pacman -S network-manager-applet (安装NetworkManager插件)
+systemctl enable sddm （开机自动启动sddm）
+systemctl enable NetworkManager （开机自动启动NetworkManager）
+systemctl disable netctl （取消开机自动启动netctl）
+netctl和networkmanager互斥！
+新建用户并赋予其sudo权限 useradd -m -G wheel luanrzh （创建用户luanrzh）
+passwd luanrzh （修改luanrzh密码）
+pacman -S sudo（安装sudo）
+vim /etc/sudoers （配置sudo）
+创建交换文件 fallocate -l 4G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+vim /etc/fstab
+安装yaourt vim /etc/pacman.conf
+------------------------------ [archlinuxcn] SigLevel = Optional TrustAll Server = http://repo.</description></item><item><title>ArchLinux安装（一）</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/archlinux%E5%AE%89%E8%A3%85%E4%B8%80/</link><pubDate>Wed, 11 Dec 2019 22:33:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/archlinux%E5%AE%89%E8%A3%85%E4%B8%80/</guid><description>ArchLinux安装第一部分, 只包含基础环境的安装, 不包括桌面环境。本文档参考自ArchLinux官方Wiki的Installation guide。
+一、硬盘分区 创建引导分区和根分区 fdisk /dev/sda （进入第一个硬盘）
+g （如果是全新硬盘，使用g创建新的gpt分区表）
+n 回车 回车 +500M （创建新的分区作为引导分区，大小为500M）
+t 1 （修改分区类型为EFI System）
+n 回车 回车 +10G （创建新的分区作为根分区，大小为10G）
+p （打印所有更改）
+w （保存所有更改）
+格式化分区 mkfs.fat -F32 /dev/sda1 （格式化引导分区）
+mkfs.ext4 /dev/sda2 （格式化根分区）
+挂载分区 mount /dev/sda2 /mnt （挂载根分区到airrootfs下的mnt目录）
+mkdir /mnt/boot （在airrootfs下的mnt目录创建boot子目录）
+mount /dev/sda2 /mnt/boot （挂载引导分区到airrootfs下的mnt/boot目录）
+（注意！！！chroot之前，所有的操作均是在内存中进行，airrootfs挂载为系统根目录，chroot在后面有介绍）
+二、联网安装 联网 wifi-menu （使用无线局域网）
+dhcp （使用自动拨号）
+（注意！使用手机开热点时，电脑可能不能正常解析DNS服务器，需要手动设置。）
+vim /etc/resolv.conf
+-------------------------------------------- nameserver 114.114.114.114） -------------------------------------------- 选择镜像源 vim /etc/pacman.d/mirrolist （修改镜像源）
+-------------------------------------------------- Server = http://mirrors.</description></item><item><title>树莓派配置</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E6%A0%91%E8%8E%93%E6%B4%BE%E9%85%8D%E7%BD%AE/</link><pubDate>Wed, 12 Dec 2018 21:57:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E6%A0%91%E8%8E%93%E6%B4%BE%E9%85%8D%E7%BD%AE/</guid><description>树莓派配置, 包括常用开发环境及部分实用工具的安装与配置
+安装raspbian系统至SD卡 略
+选择国内仓库源 sudo sed -i &amp;#39;s#://raspbian.raspberrypi.org#s://mirrors.ustc.edu.cn/raspbian#g&amp;#39; /etc/apt/sources.list sudo sed -i &amp;#39;s#://archive.raspberrypi.org/debian#s://mirrors.ustc.edu.cn/archive.raspberrypi.org/debian#g&amp;#39; /etc/apt/sourceslist.d/raspi.list 参见链接树莓派—raspbian软件源（全）
+使用VNC协议无线连接桌面 系统已经默认安装RealVNC,直接启动即可
+vncserver 使用RDP协议无线连接桌面 sudo apt install tightvncserver xrdp 安装tightvncserver将会自动卸载realvnc
+安装phpMyAdmin环境 安装nginx,php-fpm,mairadb
+sudo apt install nginx php-fpm mariadb-server 配置数据库
+安全设置 sudo mysql_secure_installation 登录 mysql -uroot -p 报错，错误信息为：ERROR 1698 (28000): Access denied for user &amp;lsquo;root&amp;rsquo;@&amp;rsquo;localhost&amp;rsquo;
+解决方案：
+sudo mysql -uroot -p update mysql.user set authentication_string=PASSWORD(&amp;#39;root&amp;#39;), plugin=&amp;#39;mysql_native_password&amp;#39; where user=&amp;#39;root&amp;#39;; flush privileges; 配置nginx以支持php
+sudo vim /etc/nginx/sites-available/default ----------------------------------- location / { index index.</description></item><item><title>Vim配置</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/vim%E9%85%8D%E7%BD%AE/</link><pubDate>Tue, 20 Nov 2018 17:05:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/vim%E9%85%8D%E7%BD%AE/</guid><description>使用Vundle管理Vim插件与实用插件配置
+一、安装插件管理器Vundle 参见在 Linux 上使用 Vundle 管理 Vim 插件 及VundleVim/Vundle.vim
+下载Vundle git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+配置Vundle vim ~/.vimrc
+set nocompatible &amp;#34; be iMproved, required filetype off &amp;#34; required &amp;#34; set the runtime path to include Vundle and initialize set rtp+=~/.vim/bundle/Vundle.vim call vundle#begin() &amp;#34; alternatively, pass a path where Vundle should install plugins &amp;#34;call vundle#begin(&amp;#39;~/some/path/here&amp;#39;) &amp;#34; let Vundle manage Vundle, required Plugin &amp;#39;VundleVim/Vundle.vim&amp;#39; &amp;#34; The following are examples of different formats supported.</description></item><item><title>Nginx反向代理配置</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/</link><pubDate>Sun, 11 Nov 2018 14:50:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/</guid><description>以PC机上的Tomcat环境与树莓派上的LNMP环境整合过程为例, 演示Nginx反向代理简单配置过程
+整合PC机上的Tomcat环境与树莓派上的LNMP环境
+一、启动Tomcat服务与Apache服务 访问http://192.168.43.209:8080 ,测试PC机上的Tomcat环境 访问http://192.168.43.105:80 ,测试树莓派上的LNMP环境 二、修改nginx.conf sudo vim /etc/nginx/nginx.conf ----------------------------------------------------------- http { upstream tomcat { server 192.168.43.209:8080; } upstream ksweb { server 192.168.43.1:8888; } server { listen 80; server_name tomcat; location / { proxy_pass http://tomcat; } } server { listen 80; server_name pi; location / { proxy_pass http://pi; index index.php index.html index.htm; } } } ----------------------------------------------------------- 三、修改本地hosts sudo vim /etc/hosts ----------------------------------------------------------- 192.168.43.209 tomcat 192.168.43.105 pi ----------------------------------------------------------- 四、测试 sudo vim ~/Desktop/test.</description></item><item><title>Centos7.4下LAMP的安装</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/centos7.4%E4%B8%8Blamp%E7%9A%84%E5%AE%89%E8%A3%85/</link><pubDate>Wed, 28 Mar 2018 14:17:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/centos7.4%E4%B8%8Blamp%E7%9A%84%E5%AE%89%E8%A3%85/</guid><description>Centos7.4下Apache.Mysql,PHP及phpMyAdmin的安装与配置
+Linux+Apache+MySQL+PHP安装总结（centos7.4） 一、linux linux系统为centos7.4版本。
+二、Apche yum install httpd -y #（安装apache） systemctl start httpd #（启动apache，也可以是service httpd start） 三、Mysql Centos7.4版本下安装mariadb（MySQL的一个开源分支）。
+yum install mariadb mariadb-server #（安装MySql） systemctl start mariadb #（启动MySQL） mysql_secure_installation #（设置MySql，可在此处修改root密码） 四、PHP yum install php php-mysql（安装php、php-mysql模板） 五、phpMyAdmin yum install phpMyAdmin（安装数据库web端管理入口phpMyAdmin） vim /etc/httpd/conf.d/phpMyAdmin.conf（修改本配置文件才能够远程访问） &amp;lt;RequireAny&amp;gt; #Require ip 127.0.0.1 #Require ip ::1 Require all granted &amp;lt;/RequireAny&amp;gt; vim /etc /phpMyAdmin/config.inc.php（修改本配置文件才能正常登入MySQL） $cfg[&amp;#39;Servers&amp;#39;][$i][&amp;#39;user&amp;#39;] = &amp;#39;root&amp;#39;; $cfg[&amp;#39;Servers&amp;#39;][$i][&amp;#39;password&amp;#39;] = &amp;#39;Wise0823&amp;#39;;（该密码须与数据库密码一致） 六、结束 使用http://106.14.184.75/phpMyAdmin访问数据库管理页。（登录密码不能为‘0’）</description></item></channel></rss>

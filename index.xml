@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>luanrz's blog</title><link>https://blog.luanrz.cn/</link><description>Recent content on luanrz's blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 17 Oct 2022 20:50:15 +0800</lastBuildDate><atom:link href="https://blog.luanrz.cn/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo快速上手</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/hugo%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</link><pubDate>Mon, 17 Oct 2022 20:50:15 +0800</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/hugo%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</guid><description>Hugo是使用Go语言实现的静态博客生成工具，它的构建速度比Hexo更快。
+一、安装Hugo 以Linux与Mac为例，Hugo安装指令如下所示：
+pacman -S hugo # ArchLinux brew install hugo #MacOS 在命令行输入hugo version，正确显示了版本号，即证明安装成功了。更详细的安装过程可参见hugo官方安装教程
+二、初始Hugo化项目 （一）新建站点 hugo new site hugodemo cd hugodemo git init （二）新建文章 hugo new posts/hello.md 新建文章时，会依据archetypes/default.md为模版创建文件，文件将被放在content文件夹下面，hello.md的内容如下所示：
+--- title: &amp;#34;Hello&amp;#34; date: 2022-10-17T21:07:47+08:00 draft: true --- （三）增加主题 主题位于themes文件夹下，可以使用Git子模块导入喜欢的主题，以PaperMod主题为例：
+git submodule add --depth=1 https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod git submodule update --init --recursive # 仅在后续重新拉取hugodemo项目时，才需要执行此命令 （四）启动Hugo hugo server -t PaperMod -D server指令表示启动Hugo服务。
+-t(--theme)指定了主题名，后续也可以在配置文件中指定主题。
+-D(--buildDrafts)表示编译文章头部的draft标识为true的草稿文章，刚刚创建的hello.md就是一篇草稿文章。
+（五）访问站点 在终端执行curl http://localhost:1313，或在浏览器中访问http://localhost:1313，即可看到应用启动成功，刚刚写的第一篇hello文章显示在了首页。
+三、配置PaperMod主题 未经配置的PaperMod页面还不太完整，下面将简单介绍PaperMod主题的配置过程。
+首先，将根目录的config.toml重命名为config.yml，并将其中的= 换成:。随后，继续编辑config.yml，完整的配置文件如下：
+baseURL: &amp;#34;https://blog.luanrz.cn/&amp;#34; languageCode: &amp;#34;zh-cn&amp;#34; title: luanrz&amp;#39;s blog paginate: 5 theme: PaperMod # 右上角菜单项 menu: main: - identifier: home name: 首页 url: / weight: 10 - identifier: search name: 搜索 url: /search/ weight: 20 - identifier: archives name: 归档 url: /archives/ weight: 30 - identifier: categories name: 分类 url: /categories/ weight: 40 - identifier: tags name: 标签 url: /tags/ weight: 50 # 与Search搭配使用 outputs: home: - HTML - RSS - JSON # 必填，不加此节点Search无法使用 params: defaultTheme: auto # 主题颜色：auto、dark、light disableSpecial1stPost: true # 在Regular模式下禁用Home-Info区域，该开关在Home-Info模式和Profile模式无意义 hideSummary: true # 隐藏文章列表项的概述信息 hidemeta: true # 隐藏文章列表项的元数据，如：ReadingTime、WordCount等等 ShowReadingTime: true # 显示读完的预计时间（hidemeta为false才有意义） ShowWordCount: true # 显示统计字数（hidemeta为false才有意义） ShowCodeCopyButtons: true # 显示代码中的复制按钮 ShowPostNavLinks: true # 显示文章中上一篇和下一篇的链接 ShowBreadCrumbs: false # 显示面包屑导航 showtoc: false # 显示目录 tocopen: false # 显示的目录默认处于打开状态（showtoc为true才有意义） label: text: &amp;#34;luanrz&amp;#39;s blog&amp;#34; # 左上角logo区域的文字，如果不填将以全局的title值为准 # Home-Info homeInfoParams: Title: &amp;#34;luanrz的个人博客&amp;#34; # Home-Info区域的标题 Content: &amp;#34;“心有所向，日服一日，必有精进”&amp;#34; # Home-Info区域的内容 socialIcons: - name: bilibili # B站 url: &amp;#34;https://space.</description></item><item><title>HashMap原理浅析</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/hashmap%E5%8E%9F%E7%90%86%E6%B5%85%E6%9E%90/</link><pubDate>Tue, 23 Aug 2022 21:50:20 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/hashmap%E5%8E%9F%E7%90%86%E6%B5%85%E6%9E%90/</guid><description>&lt;p>HashMap是Java中一种常见的集合实现，在不同的jdk版本中，HashMap的实现也不同。本文将以jdk8为主，从源码层面简单分析一下HashMap的存储结构与读写过程，最后简单介绍一下高并发下HashMap的使用方法。&lt;/p></description></item><item><title>第一次面试过程记录与要点梳理</title><link>https://blog.luanrz.cn/posts/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%AE%B0/%E7%AC%AC%E4%B8%80%E6%AC%A1%E9%9D%A2%E8%AF%95%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%B8%8E%E8%A6%81%E7%82%B9%E6%A2%B3%E7%90%86/</link><pubDate>Mon, 22 Aug 2022 21:42:35 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%AE%B0/%E7%AC%AC%E4%B8%80%E6%AC%A1%E9%9D%A2%E8%AF%95%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95%E4%B8%8E%E8%A6%81%E7%82%B9%E6%A2%B3%E7%90%86/</guid><description>&lt;p>今天经历了工作后的第一次面试，发现自己有很多知识点没有掌握。接下来将复盘一下整个面试过程，并梳理一下后续查漏补缺的要点。&lt;/p></description></item><item><title>Java线程池简介</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%AE%80%E4%BB%8B/</link><pubDate>Sat, 20 Aug 2022 16:54:26 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%AE%80%E4%BB%8B/</guid><description>&lt;p>一般来说，Java中每一个任务都与其对应的线程共享生命周期，任务执行完毕后其线程也会跟着销毁，随着任务数量的增加，重复创建线程所带来的消耗所产生的性能影响也会更显著。线程池提供了一种复用多个线程的方案，以此避免无谓的线程创建，它通过管理线程们的生命周期和调度方式，为任务的批量执行提供更强的灵活性。&lt;/p>
+&lt;p>线程池主要是指&lt;code>ThreadPoolExecutor&lt;/code>类，本文将围绕&lt;code>ThreadPoolExecutor&lt;/code>类及其相关类，展开对线程池的介绍。&lt;/p></description></item><item><title>Java阻塞队列简介</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97%E7%AE%80%E4%BB%8B/</link><pubDate>Mon, 01 Aug 2022 17:00:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97%E7%AE%80%E4%BB%8B/</guid><description>&lt;p>Java阻塞队列是一种可以实现&lt;strong>阻塞插入&lt;/strong>和&lt;strong>阻塞移除&lt;/strong>的特殊队列，它被广泛应用于生产者消费者模式。如在线程池中，可以使用&lt;code>LinkedBlockingQueue&lt;/code>与&lt;code>SynchronousQueue&lt;/code>等阻塞队列来生产与消费线程对象。&lt;/p>
+&lt;p>下面将简单介绍Java中常用的几个阻塞队列。&lt;/p></description></item><item><title>Java锁简介</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E9%94%81%E7%AE%80%E4%BB%8B/</link><pubDate>Wed, 06 Jul 2022 11:15:36 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E9%94%81%E7%AE%80%E4%BB%8B/</guid><description>&lt;p>Java锁(Lock)是实现Java线程安全的一种手段，它通过加锁和解锁的过程来实现线程间的同步，以保证多线程在竞争同一个公共资源时数据读写的正确性。&lt;/p>
+&lt;p>本文将首先阐明&lt;a href="#%E4%B8%80%E5%89%8D%E8%A8%80">Lock在Java线程安全中的位置&lt;/a>，随后将简单介绍&lt;a href="#%E4%BA%8Clock%E7%B1%BB%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB">&lt;code>Lock&lt;/code>类之间的关系&lt;/a>，最后将简单介绍Java锁的&lt;a href="#%E4%B8%89java%E9%94%81%E7%9A%84%E6%8A%BD%E8%B1%A1%E5%AE%9A%E4%B9%89">抽象定义&lt;/a>与&lt;a href="#%E5%9B%9Bjava%E9%94%81%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0">具体实现&lt;/a>。&lt;/p></description></item><item><title>远程开发的4种解决方案</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E7%9A%844%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</link><pubDate>Mon, 04 Jul 2022 10:28:27 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91%E7%9A%844%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</guid><description>&lt;p>出于安全或性能等原因，公司将开发环境部署在了内网云环境中，内网云环境与外网完全隔离，且所有的开发环境资源（如数据库、Redis等）只能通过内网云环境访问，本地物理机无法直接访问这些测试资源，只能通过RDP协议间接访问内网云环境中的桌面，这给开发工作带来了极大的不便。为了能够直接在本地物理机进行开发，接下来将介绍4种远程开发的方法：&lt;/p>
+&lt;ol>
+&lt;li>使用nginx反向代理持续暴露远程资源&lt;/li>
+&lt;li>使用ssh转发临时暴露资源&lt;/li>
+&lt;li>使用Microsoft的Visual-Studio-Code远程开发工具&lt;/li>
+&lt;li>使用Jetbrains的Projector或Gateway远程开发工具&lt;/li>
+&lt;/ol></description></item><item><title>kubernetes入门</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/kubernetes%E5%85%A5%E9%97%A8/</link><pubDate>Fri, 01 Jul 2022 11:30:48 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/kubernetes%E5%85%A5%E9%97%A8/</guid><description>&lt;p>kubernetes（k8s）是容器编排的利器。&lt;/p>
+&lt;p>本文将介绍kubernetes本地环境的安装与基础使用，包括：创建集群、部署应用、故障排除、暴露服务、缩放应用、更新应用等内容，这里面大部分内容都来自于&lt;a href="https://kubernetes.io/zh-cn/docs/tutorials/">Kubernetes官方教程&lt;/a>。&lt;/p></description></item><item><title>Java内存模型简介</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B/</link><pubDate>Fri, 24 Jun 2022 08:50:02 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B/</guid><description>&lt;p>Java内存模型（Java Memory Model，JMM）是Java多线程读写共享内存中的一种规范，该规范支持了&lt;code>synchronized&lt;/code>、&lt;code>volatile&lt;/code>、&lt;code>final&lt;/code>、&lt;code>Lock&lt;/code>等Java并发工具。&lt;/p>
+&lt;p>前面介绍了JVM内存区域，JVM内存区域和Java内存模型是不同层次对内存的划分，Java内存模型侧重描述内存数据在多线程下的读写规则，一般关注&lt;strong>并发&lt;/strong>编程下线程如何正确读写共享数据。&lt;/p></description></item><item><title>JVM内存区域简介</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/jvm%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E7%AE%80%E4%BB%8B/</link><pubDate>Thu, 23 Jun 2022 11:24:43 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/jvm%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E7%AE%80%E4%BB%8B/</guid><description>&lt;p>JVM内存区域（JVM内存结构，JVM内存布局）是Java虚拟机运行时数据的位置划分，其主要包括：程序计数器、虚拟机栈、本地方法栈、堆、方法区。&lt;/p>
+&lt;p>后面将介绍Java内存模型，JVM内存区域和Java内存模型是不同层次对内存的划分，JVM内存区域侧重描述内存数据的结构布局，一般关注&lt;strong>垃圾回收&lt;/strong>（GC）及&lt;strong>OOM&lt;/strong>问题。&lt;/p></description></item><item><title>Java技能树</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E6%8A%80%E8%83%BD%E6%A0%91/</link><pubDate>Mon, 20 Jun 2022 15:34:51 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E6%8A%80%E8%83%BD%E6%A0%91/</guid><description>&lt;p>梳理Java开发所需的技能点，用于指导后续的学习路线，并提供系统性的查漏补缺方式。&lt;/p></description></item><item><title>JVM双亲委派模型浅析</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/jvm%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B%E6%B5%85%E6%9E%90/</link><pubDate>Thu, 16 Jun 2022 08:51:45 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/jvm%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B%E6%B5%85%E6%9E%90/</guid><description>&lt;p>&lt;strong>双亲委派&lt;/strong>(Parents Delegation)，一言以蔽之，就是：在Java虚拟机中，将类的加载行为&lt;strong>委派&lt;/strong>给父级(&lt;strong>双亲&lt;/strong>)类加载器的过程。&lt;/p>
+&lt;p>接下来将逐一介绍Java8及Java9中的类加载器，并根据类加载器的组织结构，描述双亲委派的实现过程。&lt;/p></description></item><item><title>Maven依赖机制浅析</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/maven%E4%BE%9D%E8%B5%96%E6%9C%BA%E5%88%B6%E6%B5%85%E6%9E%90/</link><pubDate>Fri, 22 Apr 2022 13:49:08 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/maven%E4%BE%9D%E8%B5%96%E6%9C%BA%E5%88%B6%E6%B5%85%E6%9E%90/</guid><description>&lt;p>Maven通过pom文件来管理Java包的依赖关系，多个pom文件组合在一起可以理解为一颗抽象的依赖树，父节点或祖父节点的包会传递给子节点或祖孙节点，这被称作&lt;strong>传递依赖&lt;/strong>(Transitive-Dependencies)。&lt;/p>
+&lt;p>传递依赖一般通过两个标签来实现：parent与dependency，其中，parent定义了上级依赖，dependency定义了下级依赖。&lt;/p>
+&lt;p>随着项目复杂性的提升，依赖树中包发生冲突的概率也会增加，Maven通过&lt;strong>依赖仲裁&lt;/strong>(Dependency-Mediation)与&lt;strong>依赖管理&lt;/strong>(Dependency-Management)来唯一确定依赖树中包的版本。&lt;/p></description></item><item><title>ThreadLocal原理浅析</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/threadlocal%E5%8E%9F%E7%90%86%E6%B5%85%E6%9E%90/</link><pubDate>Mon, 18 Apr 2022 10:01:31 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/threadlocal%E5%8E%9F%E7%90%86%E6%B5%85%E6%9E%90/</guid><description>&lt;p>ThreadLocal是一种实现线程安全的机制，它提供了访问线程局部变量（thread-local variables）的方法，线程局部变量与普通变量的不同之处在于，线程局部变量在每一个线程中的值都是独立的，这保证了在多线程环境下不会出现线程串用的问题。&lt;/p></description></item><item><title>Java单例模式中的一个多线程问题</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E4%B8%AD%E7%9A%84%E4%B8%80%E4%B8%AA%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%97%AE%E9%A2%98/</link><pubDate>Fri, 15 Apr 2022 14:43:37 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E4%B8%AD%E7%9A%84%E4%B8%80%E4%B8%AA%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%97%AE%E9%A2%98/</guid><description>&lt;p>合理使用单例模式可以节约内存资源，但错误的使用可能会导致严重的生产问题，如：多线程下，一个线程可能会覆盖上一个线程的单例属性，导致两次不同的请求得到同样的响应。&lt;/p>
+&lt;p>下面将结合一个例子来分析这种情况。&lt;/p></description></item><item><title>Spring的7个使用场景</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/spring%E7%9A%847%E4%B8%AA%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</link><pubDate>Thu, 31 Mar 2022 09:31:48 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/spring%E7%9A%847%E4%B8%AA%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</guid><description>&lt;p>&lt;a href="https://spring.io">Spring官网&lt;/a>中描述了Spring能做的7件事，如下所示：&lt;/p>
+&lt;pre tabindex="0">&lt;code class="language-plantuml" data-lang="plantuml">@startmindmap
+* Spring
+* Microservices（微服务）
+* Reactive（响应式）
+* Cloud（云）
+* Web apps（网页应用）
+* Serverless（无服务器）
+* Event Driven（事件驱动）
+* Batch（批处理）
+@endmindmap
+&lt;/code>&lt;/pre>&lt;p>下面将简单介绍各场景的概念与其关联的项目。&lt;/p></description></item><item><title>JVM性能调优工具汇总</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/jvm%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/</link><pubDate>Fri, 31 Dec 2021 10:25:57 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/jvm%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/</guid><description>一、命令行工具 序号 名称 功能 1 jps 虚拟机进程状况工具，主要用于查找vmid，是后续命令的基础 2 jstat 虚拟机统计信息监视工具，查找虚拟机进程中类加载、内存、GC等信息 3 jinfo Java配置信息工具，实时查看和调整虚拟机各项参数 4 jmap Java内存映像工具，生成堆转储快照（headump、dump），与jhat配合使用 5 jhat 虚拟机堆转储快照分析工具，分析jmap生成的堆转储快照文件，与jmap配合使用 6 jstack Java堆栈跟踪工具，生成虚拟机当前时刻的线程快照（threaddump、javacore） 7 jcmd Java命令行工具集，整合了上述众多命令 8 clhsdb HotSpot命令行调试器，也整合了上述众多命令，它在JDK9时被纳入了jhsdb 二、可视化工具 序号 名称 功能 1 JHSDB 基于服务性代理的调试工具，JDK内置（从JDK9开始提供） 2 JConsole Java监视与管理控制台，JDK内置 3 VisualVM 多合一故障处理工具，需要单独下载 4 JMC 可持续在线的监控工具，需要单独下载 参考文档
+《深入理解Java虚拟机第3版 周志明 著》</description></item><item><title>C++常用数据结构的简单使用</title><link>https://blog.luanrz.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/c++%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E4%BD%BF%E7%94%A8/</link><pubDate>Thu, 21 Oct 2021 14:09:23 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/c++%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid><description>&lt;h2 id="一常用数据结构一览">一、常用数据结构一览&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>数据结构&lt;/th>
+&lt;th>用途&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;a href="#vector">vector&lt;/a>&lt;/td>
+&lt;td>动态数组&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#stack">stack&lt;/a>&lt;/td>
+&lt;td>先入后出的线性表&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#queue">queue&lt;/a>&lt;/td>
+&lt;td>先入先出的线性表&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#map">map&lt;/a>&lt;/td>
+&lt;td>键值对元素集合&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#set">set&lt;/a>&lt;/td>
+&lt;td>无序非重复集合&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;blockquote>
+&lt;p>持续完善与更新中&amp;hellip;&lt;/p>
+&lt;/blockquote></description></item><item><title>Java8函数式编程入门</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java8%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/</link><pubDate>Sat, 21 Aug 2021 09:38:30 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java8%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/</guid><description>&lt;h2 id="一lambda表达式">一、Lambda表达式&lt;/h2>
+&lt;p>什么是Lambda表达式?&lt;/p>
+&lt;p>Lambda表达式是一个函数，有入参和出参，它表示一个行为。&lt;/p>
+&lt;p>Lambda表达式是一个对象，Java中函数是二等公民，只能依附于类存在，Lambda表达式的目标类型被称之为函数接口。&lt;/p>
+&lt;h3 id="一lambda表达式与匿名内部类对象">（一）Lambda表达式与匿名内部类对象&lt;/h3>
+&lt;p>Lambda表达式和匿名内部类对象很像，在正式介绍Lambda表达式之前，先看看一个匿名内部类对象的例子。&lt;/p>
+&lt;p>一般情况下，接口不可以直接实例化，但可以在new接口的过程中重写接口中的方法来创建一个匿名内部类对象。如下所示：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>Runnable anonymousClassesRunnable &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> Runnable&lt;span style="color:#f92672">()&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">@Override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">run&lt;/span>&lt;span style="color:#f92672">()&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> System&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">out&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">println&lt;/span>&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;我是一个匿名类内部类对象&amp;#34;&lt;/span>&lt;span style="color:#f92672">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">};&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>有没有更简单的方式呢？请看下述代码：&lt;/p>
+&lt;pre tabindex="0">&lt;code>Runnable lambdaRunnable = () -&amp;gt; System.out.println(&amp;#34;我是一个lambda表达式&amp;#34;);
+&lt;/code>&lt;/pre>&lt;p>上述代码中&lt;code>=&lt;/code>右侧的&lt;code>() -&amp;gt; System.out.println(&amp;quot;我是一个lambda表达式&amp;quot;)&lt;/code>是一个&lt;code>Lambda表达式&lt;/code>。&lt;/p>
+&lt;p>这个Lambda表达式由三部分组成：&lt;/p>
+&lt;ol>
+&lt;li>&lt;code>()&lt;/code> : 请求参数，这里为空（对应了上述匿名内部类中run方法的请求参数）&lt;/li>
+&lt;li>&lt;code>System.out.println(&amp;quot;我是一个lambda表达式&amp;quot;)&lt;/code>: 方法体（对应了上述匿名内部类中run方法的方法体）&lt;/li>
+&lt;li>&lt;code>-&amp;gt;&lt;/code> : Lambda表达式标识符，连接左侧的请求参数和右侧的方法体&lt;/li>
+&lt;/ol>
+&lt;p>可以看到，Lambda表达式与匿名内部类对象完全等价，它们都在&lt;code>=&lt;/code>右侧，都可以被赋值给&lt;code>=&lt;/code>左侧的接口变量，换言之，&lt;strong>Lambda表达式本质上是一个接口的实例化对象&lt;/strong>（在Java中，万物皆对象，lambda表达式也不例外）。那么，任意接口都可以是Lambda表达式的目标类型吗？&lt;/p></description></item><item><title>常用包管理器配置</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%B8%B8%E7%94%A8%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 16 Jul 2021 09:39:43 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%B8%B8%E7%94%A8%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8%E9%85%8D%E7%BD%AE/</guid><description>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>包管理器&lt;/th>
+&lt;th>适用语言&lt;/th>
+&lt;th>主配置文件路径&lt;/th>
+&lt;th>官方首页&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;a href="#npm">npm&lt;/a>&lt;/td>
+&lt;td>NodeJs&lt;/td>
+&lt;td>~/.npmrc&lt;/td>
+&lt;td>&lt;a href="https://www.npmjs.com/">www.npmjs.com&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#pip">pip&lt;/a>&lt;/td>
+&lt;td>Python&lt;/td>
+&lt;td>~/.config/pip/pip.conf&lt;/td>
+&lt;td>&lt;a href="https://pypi.org/">pypi.org&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#docker">docker&lt;/a>&lt;/td>
+&lt;td>-&lt;/td>
+&lt;td>/etc/docker/daemon.json&lt;/td>
+&lt;td>&lt;a href="https://www.docker.com/">www.docker.com&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#maven">maven&lt;/a>&lt;/td>
+&lt;td>Java&lt;/td>
+&lt;td>~/.m2/settings.xml&lt;/td>
+&lt;td>&lt;a href="https://maven.apache.org/">maven.apache.org&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#gradle">gradle&lt;/a>&lt;/td>
+&lt;td>Java&lt;/td>
+&lt;td>-&lt;/td>
+&lt;td>&lt;a href="https://gradle.org/">gradle.org&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;a href="#go">go&lt;/a>&lt;/td>
+&lt;td>go&lt;/td>
+&lt;td>~/.config/go/env&lt;/td>
+&lt;td>&lt;a href="https://golang.google.cn/">golang.google.cn&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>Java正则入门</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E6%AD%A3%E5%88%99%E5%85%A5%E9%97%A8/</link><pubDate>Wed, 07 Apr 2021 18:01:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E6%AD%A3%E5%88%99%E5%85%A5%E9%97%A8/</guid><description>&lt;p>以String类中的匹配与替换为入口, 简单介绍Java正则匹配与正则替换&lt;/p>
+&lt;h2 id="一前言">一、前言&lt;/h2>
+&lt;p>正则表达式一般用于字符串的模式&lt;strong>匹配&lt;/strong>与&lt;strong>替换&lt;/strong>，Java通过Pattern类与Matcher类原生支持正则表达式。在此基础上，String类封装了正则的细节，提供了一种更便捷的正则操作的方式。&lt;/p>
+&lt;p>本文将从String类说起，通过它的matches与replace系列方法，介绍&lt;a href="#%E4%BA%8Cstring%E5%8C%B9%E9%85%8D%E4%B8%8E%E6%9B%BF%E6%8D%A2">String的匹配与替换&lt;/a>。随后，将介绍Java正则中的&lt;a href="#%E4%B8%89pattern%E4%B8%8Ematcher">Pattern与Matcher&lt;/a>两大核心类的基本使用方法。最后，将从&lt;a href="#%E5%9B%9Bstring%E6%AD%A3%E5%88%99%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90">String类源码&lt;/a>层面，简单分析String类的正则匹配和正则替换是如何通过Pattern类和Matcher类实现的。&lt;/p>
+&lt;p>有关正则表达式的前置知识介绍，请参照本文&lt;a href="#%E9%99%84%E5%BD%95">附录&lt;/a>中的&lt;a href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E9%80%9A%E7%94%A8%E7%9F%A5%E8%AF%86">正则表达式通用知识&lt;/a>。&lt;/p></description></item><item><title>数据结构中的排序算法</title><link>https://blog.luanrz.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%AD%E7%9A%84%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</link><pubDate>Tue, 06 Apr 2021 10:00:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%AD%E7%9A%84%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</guid><description>&lt;p>介绍数据结构中主要排序算法的流程与具体实现。包括以下八个排序算法：插入排序、希尔排序、冒泡排序、快速排序、选择排序、堆排序、归并排序、基数排序。&lt;/p>
+&lt;h2 id="一排序算法一览">一、排序算法一览&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:center">排序方法&lt;/th>
+&lt;th style="text-align:center">时间复杂度&lt;/th>
+&lt;th style="text-align:center">空间复杂度&lt;/th>
+&lt;th style="text-align:center">稳定性&lt;/th>
+&lt;th style="text-align:center">所属类别&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:center">&lt;a href="#%E4%B8%80%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F">插入排序&lt;/a>&lt;/td>
+&lt;td style="text-align:center">O(n²)&lt;/td>
+&lt;td style="text-align:center">O(1)&lt;/td>
+&lt;td style="text-align:center">√&lt;/td>
+&lt;td style="text-align:center">插入法&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">&lt;a href="#%E4%BA%8C%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F">选择排序&lt;/a>&lt;/td>
+&lt;td style="text-align:center">O(n²)&lt;/td>
+&lt;td style="text-align:center">O(1)&lt;/td>
+&lt;td style="text-align:center">×(√)&lt;/td>
+&lt;td style="text-align:center">选择法&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">&lt;a href="#%E4%B8%89%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F">冒泡排序&lt;/a>&lt;/td>
+&lt;td style="text-align:center">O(n²)&lt;/td>
+&lt;td style="text-align:center">O(1)&lt;/td>
+&lt;td style="text-align:center">√&lt;/td>
+&lt;td style="text-align:center">交换法&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">&lt;a href="#%E5%9B%9B%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F">希尔排序&lt;/a>&lt;/td>
+&lt;td style="text-align:center">O(n¹˙³)&lt;/td>
+&lt;td style="text-align:center">O(1)&lt;/td>
+&lt;td style="text-align:center">×&lt;/td>
+&lt;td style="text-align:center">插入法&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">&lt;a href="#%E4%BA%94%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F">快速排序&lt;/a>&lt;/td>
+&lt;td style="text-align:center">O(nlogn)&lt;/td>
+&lt;td style="text-align:center">O(logn)&lt;/td>
+&lt;td style="text-align:center">×&lt;/td>
+&lt;td style="text-align:center">交换法&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">&lt;a href="#%E5%85%AD%E5%A0%86%E6%8E%92%E5%BA%8F">堆排序&lt;/a>&lt;/td>
+&lt;td style="text-align:center">O(nlogn)&lt;/td>
+&lt;td style="text-align:center">O(1)&lt;/td>
+&lt;td style="text-align:center">×&lt;/td>
+&lt;td style="text-align:center">选择法&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">&lt;a href="#%E4%B8%83%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F">归并排序&lt;/a>&lt;/td>
+&lt;td style="text-align:center">O(nlogn)&lt;/td>
+&lt;td style="text-align:center">O(n)&lt;/td>
+&lt;td style="text-align:center">√&lt;/td>
+&lt;td style="text-align:center">-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:center">&lt;a href="#%E5%85%AB%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F">基数排序&lt;/a>&lt;/td>
+&lt;td style="text-align:center">O(d*n)&lt;/td>
+&lt;td style="text-align:center">O(n)&lt;/td>
+&lt;td style="text-align:center">√&lt;/td>
+&lt;td style="text-align:center">-&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>命令备忘录：GDB</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95gdb/</link><pubDate>Fri, 02 Apr 2021 09:50:12 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95gdb/</guid><description>编译 gcc Hello.cpp 生成可执行文件a.out
+gcc -o Hello.o Hello.cpp 生成可执行文件Hello.o
+gcc -g -o Hello.o Hello.cpp 生成可调试的可执行文件Hello.o
+调试 gdb Hello.o
+常用GDB命令 break ：新增断点。后接一个参数，表示在指定位置增加断点，参数格式为：[源文件名:]&amp;lt;方法名&amp;gt; | [源文件名:]&amp;lt;行数&amp;gt;
+delete：删除断点。后接零个参数，表示删除所有断点。后接一个参数，表示删除指定序号的断点，参数格式为：&amp;lt;序号&amp;gt;
+step：往下执行语句，会进入函数。后接零个参数，表示往下执行一条语句。后接一个参数，表示往下执行指定数目的多条语句，参数格式为：&amp;lt;向下行数&amp;gt;
+next：往下执行语句，不会进入函数。参数规范与step类似
+continue：继续运行
+finish：运行至当前函数返回后退出
+list：查看代码
+frame：查看帧栈
+backstrace：查看整个调用栈
+info ：查看信息。后接一个参数，参数格式为：&amp;lt;args | locals&amp;gt;，args表示查看函数参数，locals表示查看局部变量
+print：打印值。</description></item><item><title>命令备忘录：Git</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95git/</link><pubDate>Fri, 02 Apr 2021 09:50:12 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95git/</guid><description>删除远程分支 git push origin --del rzluan-orderchange/ndc_xml_api_v3
+克隆指定分支到指定文件夹 git clone -b [branch_name] [git_url] [dir_path]
+变更统计 git log --author=rzluan --after=&amp;#34;2019-11-01 00:00:00&amp;#34; --before=&amp;#34;2019-11-30 23:59:59&amp;#34; --name-only | grep &amp;#39;^src/*&amp;#39; | sort | uniq git log --author=rzluan --after=&amp;#34;2019-11-01 00:00:00&amp;#34; --before=&amp;#34;2019-11-30 23:59:59&amp;#34; --numstat | grep &amp;#34;src&amp;#34; | awk &amp;#39;{a[$3]+=$1;b[$3]+=$2}END{for(j in a) print j,&amp;#34;代码变更&amp;#34;(a[j]+b[j])&amp;#34;行&amp;#34;}&amp;#39; git log --author=rzluan --after=&amp;#34;2019-11-01 00:00:00&amp;#34; --before=&amp;#34;2019-11-30 23:59:59&amp;#34; --numstat | grep &amp;#34;src&amp;#34; | awk &amp;#39;{a[$3]+=($1+$2)}END{for(j in a) b+=a[j]} END{print &amp;#34;总行数&amp;#34;,b}&amp;#39; 修改commit记录 修改提交时间：git commit --amend --date=&amp;quot;May 8 12:00:30 2020 +0800&amp;quot;</description></item><item><title>命令备忘录：IDEA</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95idea/</link><pubDate>Fri, 02 Apr 2021 09:50:12 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95idea/</guid><description>Editor Basics Actions Ctrl + Shift + A
+Select Ctrl + Shift + → Select a word
+Ctrl + Shift + ← Select a word
+Ctrl + W Extend the select
+Ctrl + Shift + W Shrink the select
+Ctrl + A Select whole file
+Comment Line Ctrl + / Comment out or uncomment line(s)
+Delete Line Ctrl + Y Delete line(s)
+Ctrl + Z Restore the deleted line(s)
+Duplicate Ctrl + D Duplicate line(s)</description></item><item><title>命令备忘录：Java</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95java/</link><pubDate>Fri, 02 Apr 2021 09:50:12 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95java/</guid><description>Java序列化 new ObjectOutputStream(new FileOutputStream(&amp;quot;resp&amp;quot;)).writeObject(resp);
+配置VM参数&amp;quot;javaagent&amp;quot;以支持切面编程 - javaagent:/home/luanrzh/.m2/repository/org/aspectj/aspectjweaver/1.9.4/aspectjweaver-1.9.4.jar 启用远程调试 java -jar \ -Dserver.port=8080 \ -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8081 \ parent-0.0.1-SNAPSHOT.jar jasypt加密解密 java -cp jasypt-1.9.2.jar org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI input=123456 password=1234-1234-1234-1234 algorithm=PBEWithMD5AndDES java -cp jasypt-1.9.2.jar org.jasypt.intf.cli.JasyptPBEStringDecryptionCLI input=&amp;#34;jvp0W0qUkv0WmG/JzwyUTA==&amp;#34; password=1234-1234-1234-1234 algorithm=PBEWithMD5AndDES</description></item><item><title>命令备忘录：Linux</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95linux/</link><pubDate>Fri, 02 Apr 2021 09:50:12 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95linux/</guid><description>会话管理——使用screen恢复掉线的shell会话 screen -S myScreen
+screen -r myScreen
+显示当前目录所占用的磁盘空间 du -h --max-depth=1
+访问NFS服务 sudo pacman -S core/nfs-utils #ArchLinux下安装nfs-utils，不然没有showmount命令
+showmount -e 192.168.1.105 #显示指定IP上挂载的卷
+sudo mount -t nfs -o proto=tcp,nolock 192.168.1.105:/volume1/homes homes/ #开始挂载
+访问SMB服务 sudo pacman -S smbclient #安装
+smbclient -L 192.168.0.100 -U username%password # 显示共享目录
+smbclient //192.168.0.100/directory -U username%password # 进入上述共享目录中的directory目录
+一键删除所有项目下的target find . -name target | awk '{print &amp;quot;rm -rf &amp;quot;$1}' | sh
+扫描局域网所有IP与端口 nmap -sP 192.168.1.0/24
+nmap -A 192.168.1.100
+压缩与解压 压缩 解压 tar.</description></item><item><title>命令备忘录：Vim</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95vim/</link><pubDate>Fri, 02 Apr 2021 09:50:12 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98%E5%BD%95vim/</guid><description>浏览 ctrl-f 向下一翻页（f = forword ） ctrl-b 向上一翻页（b = backward） ctrl-d 向下翻半页（d = down） ctlr-u 向上翻半页（u = up） ctrl-e 向下滚一行 ctrl-y 向上滚一行 zz 让光标所在的行居屏幕中央 zt 让光标所在的行居屏幕最上一行 t=top zb 让光标所在的行居屏幕最下一行 b=bottom 编辑 u 撤销 Ctrl-r 恢复撤销 替换 命令备忘录：Vim
+:%s/a/b/g 将所有的a替换为b</description></item><item><title>i3wm配置</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/i3wm%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 04 Sep 2020 16:21:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/i3wm%E9%85%8D%E7%BD%AE/</guid><description>i3wm是Linux下的一款窗口管理器(Windowns Manager), 通常简称为i3。 本文档基于Archlinux(其它发行版大同小异), 简单介绍了i3的常用软件与配置。
+安装 sudo pacman -S i3-gaps polybar rofi feh picom yay i3lock-fancy-rapid 序号 软件 功能 01 i3-gaps i3-wm的增强版，支持间隙等特性 02 polybar 状态栏，i3-bar的替代者 03 rofi 启动菜单，dmenu的替代者 04 feh 设置桌面壁纸 05 picom 透明支持 06 i3lock-fancy-rapid 锁屏，i3lock的升级版，支持背景虚化 配置 配置polybar 生成polybar配置文件 mkdir ~/.config/polybar cp /usr/share/doc/polybar/config ~/.config/polybar/ 编辑polybar配置文件 vim ~/.config/polybar/config ------------------------------------------ [bar/example] ... border-size = 0 ... modules-left = i3 modules-center = date modules-right = memory cpu battery wlan eth ... [module/wlan] type = internal/network interface = wlp0s20f3 .</description></item><item><title>骚气紫快走开——修改Ubuntu18.04的背景色</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E9%AA%9A%E6%B0%94%E7%B4%AB%E5%BF%AB%E8%B5%B0%E5%BC%80%E4%BF%AE%E6%94%B9ubuntu18.04%E7%9A%84%E8%83%8C%E6%99%AF%E8%89%B2/</link><pubDate>Thu, 03 Sep 2020 13:32:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E9%AA%9A%E6%B0%94%E7%B4%AB%E5%BF%AB%E8%B5%B0%E5%BC%80%E4%BF%AE%E6%94%B9ubuntu18.04%E7%9A%84%E8%83%8C%E6%99%AF%E8%89%B2/</guid><description>通过修改&amp;quot;GRUB界面&amp;quot;,&amp;ldquo;plymouth界面&amp;quot;以及&amp;quot;锁屏登陆界面&amp;rdquo;, 来规避Ubuntu18.04的紫色背景
+GRUB界面 sudo cp pictrue.jpg /boot/grub
+cd /etc/default/
+sudo cp grub grub.bak
+sudo vim grub
+GRUB_GFXMODE=1366x768 sudo update-grub
+plymouth界面 cd /usr/share/plymouth/themes/ubuntu-logo
+sudo cp ubuntu-logo.script ubuntu-logo.script.bak
+sudo vim ubuntu-logo.script
+Window.SetBackgroundTopColor (0.00, 0.00, 0.00); Window.SetBackgroundBottomColor (0.00, 0.00, 0.00); 锁屏登陆界面 cd /usr/share/gnome-shell/theme/
+sudo cp ubuntu.css ubuntu.css.bak
+sudo vim ubuntu.css
+#lockDialogGroup { background: black; }</description></item><item><title>IDEA插件开发环境搭建</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/idea%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link><pubDate>Sun, 03 May 2020 12:18:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/idea%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid><description>本文介绍了手动下载并安装IDEA插件开发环境依赖的过程, 以解决IDEA插件开发环境过程中下载Gradle包过慢的问题如果你的网络环境可以正常下载依赖包, 本文对你来说是通篇废话, 请忽略.
+IDEA插件开发环境搭建 一、依赖 由于在国下载内Gradle包的速度较慢，部分大文件会因为下载时间过长连接超时导致下载失败。
+在Idea插件项目中，主要会下载以下三个大文件：
+ideaIC-2020.1.zip （500M左右） ideaIC-2020.1-sources.jar （100M左右） jbr-11_0_6-linux-x64-b765.25.tar.gz （100M左右） 下面是ideaIC-2020.1.zip依赖的解决过程，其它依赖的解决过程与之类似。
+1. 获取下载链接并手动下载依赖包 在命令行下进入Gradle项目根目录，执行下述命令：
+./gradlew compileDebugSource --stacktrace -info
+在上述日志中找到下载链接，通过迅雷下载。（你也可以直接通过 附录 部分下载）
+2. 获取依赖包的SHA1码 使用sha1sum命令获取文件的SHA1码。
+sha1sum ideaIC-2020.1.zip 执行上述命令后，将得到：
+cbeeb1f1aebd4c9ea8fb5ab990c5904a676fc41a ideaIC-2020.1.zip cbeeb1f1aebd4c9ea8fb5ab990c5904a676fc41a就是ideaIC-2020.1.zip的SHA1码。
+3. 在gradle本地缓存的指定路径下创建SHA1码同名文件夹，将并将依赖包移动至此 进入gradle本地缓存的路径
+cd ~/.gradle/caches/modules-2/files-2.1
+进入ideaIC-2020.1.zip的所在路径
+cd com.jetbrains.intellij.idea/ideaIC/2020.1
+创建SHA1码同名文件夹
+mkdir cbeeb1f1aebd4c9ea8fb5ab990c5904a676fc41a
+移动依赖包
+cp ~/Downloads/ideaIC-2020.1.zip cbeeb1f1aebd4c9ea8fb5ab990c5904a676fc41a
+附：各依赖包的路径 com.jetbrains.intellij.idea/ideaIC/2020.1/xxx/ideaIC-2020.1.zip 下载 com.jetbrains.intellij.idea/ideaIC/2020.1/xxx/ideaIC-2020.1-sources.jar 下载 com.jetbrains/jbre/jbr-11_0_6-linux-x64-b765.25.tar.gz 下载</description></item><item><title>OpenJDK8u构建指南</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/openjdk8u%E6%9E%84%E5%BB%BA%E6%8C%87%E5%8D%97/</link><pubDate>Mon, 20 Jan 2020 17:42:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/openjdk8u%E6%9E%84%E5%BB%BA%E6%8C%87%E5%8D%97/</guid><description>官方OpenJdk8u构建指南个人翻译版本。官方地址为README-builds.html
+介绍 这个README文件包含了OpenJDK的构建说明。构建OpenJDK的源码需要一定的专业技术知识。
+!!!!!!!!!!!!!!! 这是对这份文档的一次重大改写!!!!!!!!!!!!!!!
+概述如下：
+当前构建方式是“configure &amp;amp;&amp;amp; make” GNU make的版本应当大于或等于3.81 构建是可伸缩的，比如：可以使用更多的处理器来完成构建过程，以减少构建时间 嵌套与递归的make调用已经明显减少，fork/exec 与子进程生成的总量也相应减少 不再支持 Windows MKS Windows Vistual Studio 的 vsvars*.bat 和 vcvars*.bat 等文件会自动运行 构建OpenJDK时，不再使用Ant 不再支持在配置构建过程时使用 ALT_* 环境变量 目录 介绍
+使用Mercurial
+获取源码 仓库结构 源码规范 构建
+系统设置 Linux Solaris MacOSX Windows Configure Make 测试
+附录A：提示和技巧
+常见问题解答 构建性能技巧 故障排查 附录B：GNU-Make信息
+附录C：构建环境
+使用Mercurial OpenJDK源码由版本控制系统 Mercurial 维护，如果你还不熟悉 Mercurial ，请参阅 Beginner Guides 或参考 Mercurial Book 。本书的前几章对“Mercurial是什么“以及“Mercurial如何工作”进行了出色的概述。
+获取源码 执行主仓库下的 `get_source.sh 命令，获取 OpenJDK Mercurial 仓库的全部内容。
+hg clone http://hg.</description></item><item><title>Termux配置</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/termux%E9%85%8D%E7%BD%AE/</link><pubDate>Wed, 11 Dec 2019 22:33:02 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/termux%E9%85%8D%E7%BD%AE/</guid><description>Termux是Android下的一款Linux环境, 本文简要介绍了Termux的部分实用配置
+Termux初始配置 允许外部存储 termux-setup-storage
+修改termux镜像源 export EDITOR=vi &amp;amp;&amp;amp; apt edit-sources
+----------------------------------------------------------- http://mirrors.tuna.tsinghua.edu.cn/termux ----------------------------------------------------------- apt update &amp;amp;&amp;amp; upgrade
+安装ubuntu 下载 ubuntu pkg install wget &amp;amp;&amp;amp; wget https://raw.githubusercontent.com/Neo-Oli/termux-ubuntu/master/ubuntu.sh &amp;amp; bash ubuntu.sh
+修改dns vi ~/ubuntu-fs/etc/resolv.conf
+-------------------------------------- nameserver 114.114.114.114 -------------------------------------- 修改ubuntu镜像源 vi ~/ubuntu-fs/etc/apt/source.list
+-------------------------------------------------------------------------------------------------- # 默认注释了源码仓库，如有需要可自行取消注释 deb https://mirrors.ustc.edu.cn/ubuntu-ports/ xenial main restricted universe multiverse # deb-src https://mirrors.ustc.edu.cn/ubuntu-ports/ xenial main main restricted universe multiverse deb https://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse # deb-src https://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse deb https://mirrors.</description></item><item><title>ArchLinux安装（二）</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/archlinux%E5%AE%89%E8%A3%85%E4%BA%8C/</link><pubDate>Wed, 11 Dec 2019 22:33:01 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/archlinux%E5%AE%89%E8%A3%85%E4%BA%8C/</guid><description>ArchLinux安装第二部分, 包括图形化界面与实用软件的安装及实用配置。本文档参考自ArchLinux官方Wiki的General recommendations。
+四、后续安装 安装图形化界面 pacman -S xf86-video-intel （安装显卡驱动）
+pacman -S xorg xfce4 xfce4-goodies sddm （安装桌面桌面环境与桌面管理器）
+pacman -S network-manager-applet (安装NetworkManager插件)
+systemctl enable sddm （开机自动启动sddm）
+systemctl enable NetworkManager （开机自动启动NetworkManager）
+systemctl disable netctl （取消开机自动启动netctl）
+netctl和networkmanager互斥！
+新建用户并赋予其sudo权限 useradd -m -G wheel luanrzh （创建用户luanrzh）
+passwd luanrzh （修改luanrzh密码）
+pacman -S sudo（安装sudo）
+vim /etc/sudoers （配置sudo）
+创建交换文件 fallocate -l 4G /swapfile
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+vim /etc/fstab
+安装yaourt vim /etc/pacman.conf
+------------------------------ [archlinuxcn] SigLevel = Optional TrustAll Server = http://repo.</description></item><item><title>ArchLinux安装（一）</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/archlinux%E5%AE%89%E8%A3%85%E4%B8%80/</link><pubDate>Wed, 11 Dec 2019 22:33:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/archlinux%E5%AE%89%E8%A3%85%E4%B8%80/</guid><description>ArchLinux安装第一部分, 只包含基础环境的安装, 不包括桌面环境。本文档参考自ArchLinux官方Wiki的Installation guide。
+一、硬盘分区 创建引导分区和根分区 fdisk /dev/sda （进入第一个硬盘）
+g （如果是全新硬盘，使用g创建新的gpt分区表）
+n 回车 回车 +500M （创建新的分区作为引导分区，大小为500M）
+t 1 （修改分区类型为EFI System）
+n 回车 回车 +10G （创建新的分区作为根分区，大小为10G）
+p （打印所有更改）
+w （保存所有更改）
+格式化分区 mkfs.fat -F32 /dev/sda1 （格式化引导分区）
+mkfs.ext4 /dev/sda2 （格式化根分区）
+挂载分区 mount /dev/sda2 /mnt （挂载根分区到airrootfs下的mnt目录）
+mkdir /mnt/boot （在airrootfs下的mnt目录创建boot子目录）
+mount /dev/sda2 /mnt/boot （挂载引导分区到airrootfs下的mnt/boot目录）
+（注意！！！chroot之前，所有的操作均是在内存中进行，airrootfs挂载为系统根目录，chroot在后面有介绍）
+二、联网安装 联网 wifi-menu （使用无线局域网）
+dhcp （使用自动拨号）
+（注意！使用手机开热点时，电脑可能不能正常解析DNS服务器，需要手动设置。）
+vim /etc/resolv.conf
+-------------------------------------------- nameserver 114.114.114.114） -------------------------------------------- 选择镜像源 vim /etc/pacman.d/mirrolist （修改镜像源）
+-------------------------------------------------- Server = http://mirrors.</description></item><item><title>Java文件流与策略模式的综合运用：用两种方式完成文件读写操作</title><link>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E6%96%87%E4%BB%B6%E6%B5%81%E4%B8%8E%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%BB%BC%E5%90%88%E8%BF%90%E7%94%A8%E7%94%A8%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%8C%E6%88%90%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/</link><pubDate>Mon, 20 May 2019 16:44:45 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E6%96%87%E4%BB%B6%E6%B5%81%E4%B8%8E%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%BB%BC%E5%90%88%E8%BF%90%E7%94%A8%E7%94%A8%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%8C%E6%88%90%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>文件分为文本文件和非文本文件（二进制文件，如音频、图片文件等），此处讨论的主要是文本文件。&lt;/p>
+&lt;p>文件的读写操作基于Java的I/O流，Java流分为字节流与字符流，它们都可以实现文件的读写操作。一般而言，字符流专注于处理文本文件，而字节流则更为通用，所有类型的文件均可操作。基于此，文本文件的读写操作有两种不同的策略：字节流文件读写与字符流文件读写。&lt;/p></description></item><item><title>树莓派配置</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E6%A0%91%E8%8E%93%E6%B4%BE%E9%85%8D%E7%BD%AE/</link><pubDate>Wed, 12 Dec 2018 21:57:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E6%A0%91%E8%8E%93%E6%B4%BE%E9%85%8D%E7%BD%AE/</guid><description>树莓派配置, 包括常用开发环境及部分实用工具的安装与配置
+安装raspbian系统至SD卡 略
+选择国内仓库源 sudo sed -i &amp;#39;s#://raspbian.raspberrypi.org#s://mirrors.ustc.edu.cn/raspbian#g&amp;#39; /etc/apt/sources.list sudo sed -i &amp;#39;s#://archive.raspberrypi.org/debian#s://mirrors.ustc.edu.cn/archive.raspberrypi.org/debian#g&amp;#39; /etc/apt/sourceslist.d/raspi.list 参见链接树莓派—raspbian软件源（全）
+使用VNC协议无线连接桌面 系统已经默认安装RealVNC,直接启动即可
+vncserver 使用RDP协议无线连接桌面 sudo apt install tightvncserver xrdp 安装tightvncserver将会自动卸载realvnc
+安装phpMyAdmin环境 安装nginx,php-fpm,mairadb
+sudo apt install nginx php-fpm mariadb-server 配置数据库
+安全设置 sudo mysql_secure_installation 登录 mysql -uroot -p 报错，错误信息为：ERROR 1698 (28000): Access denied for user &amp;lsquo;root&amp;rsquo;@&amp;rsquo;localhost&amp;rsquo;
+解决方案：
+sudo mysql -uroot -p update mysql.user set authentication_string=PASSWORD(&amp;#39;root&amp;#39;), plugin=&amp;#39;mysql_native_password&amp;#39; where user=&amp;#39;root&amp;#39;; flush privileges; 配置nginx以支持php
+sudo vim /etc/nginx/sites-available/default ----------------------------------- location / { index index.</description></item><item><title>Vim配置</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/vim%E9%85%8D%E7%BD%AE/</link><pubDate>Tue, 20 Nov 2018 17:05:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/vim%E9%85%8D%E7%BD%AE/</guid><description>使用Vundle管理Vim插件与实用插件配置
+一、安装插件管理器Vundle 参见在 Linux 上使用 Vundle 管理 Vim 插件 及VundleVim/Vundle.vim
+下载Vundle git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+配置Vundle vim ~/.vimrc
+set nocompatible &amp;#34; be iMproved, required filetype off &amp;#34; required &amp;#34; set the runtime path to include Vundle and initialize set rtp+=~/.vim/bundle/Vundle.vim call vundle#begin() &amp;#34; alternatively, pass a path where Vundle should install plugins &amp;#34;call vundle#begin(&amp;#39;~/some/path/here&amp;#39;) &amp;#34; let Vundle manage Vundle, required Plugin &amp;#39;VundleVim/Vundle.vim&amp;#39; &amp;#34; The following are examples of different formats supported.</description></item><item><title>Nginx反向代理配置</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/</link><pubDate>Sun, 11 Nov 2018 14:50:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/</guid><description>以PC机上的Tomcat环境与树莓派上的LNMP环境整合过程为例, 演示Nginx反向代理简单配置过程
+整合PC机上的Tomcat环境与树莓派上的LNMP环境
+一、启动Tomcat服务与Apache服务 访问http://192.168.43.209:8080 ,测试PC机上的Tomcat环境 访问http://192.168.43.105:80 ,测试树莓派上的LNMP环境 二、修改nginx.conf sudo vim /etc/nginx/nginx.conf ----------------------------------------------------------- http { upstream tomcat { server 192.168.43.209:8080; } upstream ksweb { server 192.168.43.1:8888; } server { listen 80; server_name tomcat; location / { proxy_pass http://tomcat; } } server { listen 80; server_name pi; location / { proxy_pass http://pi; index index.php index.html index.htm; } } } ----------------------------------------------------------- 三、修改本地hosts sudo vim /etc/hosts ----------------------------------------------------------- 192.168.43.209 tomcat 192.168.43.105 pi ----------------------------------------------------------- 四、测试 sudo vim ~/Desktop/test.</description></item><item><title>Centos7.4下LAMP的安装</title><link>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/centos7.4%E4%B8%8Blamp%E7%9A%84%E5%AE%89%E8%A3%85/</link><pubDate>Wed, 28 Mar 2018 14:17:00 +0000</pubDate><guid>https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/centos7.4%E4%B8%8Blamp%E7%9A%84%E5%AE%89%E8%A3%85/</guid><description>Centos7.4下Apache.Mysql,PHP及phpMyAdmin的安装与配置
+Linux+Apache+MySQL+PHP安装总结（centos7.4） 一、linux linux系统为centos7.4版本。
+二、Apche yum install httpd -y #（安装apache） systemctl start httpd #（启动apache，也可以是service httpd start） 三、Mysql Centos7.4版本下安装mariadb（MySQL的一个开源分支）。
+yum install mariadb mariadb-server #（安装MySql） systemctl start mariadb #（启动MySQL） mysql_secure_installation #（设置MySql，可在此处修改root密码） 四、PHP yum install php php-mysql（安装php、php-mysql模板） 五、phpMyAdmin yum install phpMyAdmin（安装数据库web端管理入口phpMyAdmin） vim /etc/httpd/conf.d/phpMyAdmin.conf（修改本配置文件才能够远程访问） &amp;lt;RequireAny&amp;gt; #Require ip 127.0.0.1 #Require ip ::1 Require all granted &amp;lt;/RequireAny&amp;gt; vim /etc /phpMyAdmin/config.inc.php（修改本配置文件才能正常登入MySQL） $cfg[&amp;#39;Servers&amp;#39;][$i][&amp;#39;user&amp;#39;] = &amp;#39;root&amp;#39;; $cfg[&amp;#39;Servers&amp;#39;][$i][&amp;#39;password&amp;#39;] = &amp;#39;Wise0823&amp;#39;;（该密码须与数据库密码一致） 六、结束 使用http://106.14.184.75/phpMyAdmin访问数据库管理页。（登录密码不能为‘0’）</description></item></channel></rss>

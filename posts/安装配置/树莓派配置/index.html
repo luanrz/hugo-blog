@@ -1,0 +1,148 @@
+<!doctype html><html lang=en dir=auto><head><script>const loadScript=(e,t)=>{var n=document.createElement("script");n.onerror=e=>{throw new URIError("The script "+e.target.src+" didn't load correctly.")},t&&(n.onload=t),document.head.insertAdjacentElement("beforeend",n),n.src=e},loadPlantUMLOnNeed=()=>{let e="language-plantuml";document.querySelectorAll("[class^="+e+"]").length>0&&loadScript("https://cdn.jsdelivr.net/gh/jmnote/plantuml-encoder@1.2.4/dist/plantuml-encoder.min.js",()=>{(function(){Array.prototype.forEach.call(document.querySelectorAll("[class^="+e+"]"),function(e){let t=document.createElement("IMG");t.loading="lazy",t.src="http://www.plantuml.com/plantuml/svg/~1"+plantumlEncoder.encode(e.innerText),e.parentNode.insertBefore(t,e),e.style.display="none"})})(),console.log("PlantUML init done")})};window.addEventListener("load",function(){loadPlantUMLOnNeed()})</script><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>树莓派配置 | luanrz's blog</title><meta name=keywords content="Linux"><meta name=description content="树莓派配置, 包括常用开发环境及部分实用工具的安装与配置
+安装raspbian系统至SD卡 略
+选择国内仓库源 sudo sed -i 's#://raspbian.raspberrypi.org#s://mirrors.ustc.edu.cn/raspbian#g' /etc/apt/sources.list sudo sed -i 's#://archive.raspberrypi.org/debian#s://mirrors.ustc.edu.cn/archive.raspberrypi.org/debian#g' /etc/apt/sourceslist.d/raspi.list 参见链接树莓派—raspbian软件源（全）
+使用VNC协议无线连接桌面 系统已经默认安装RealVNC,直接启动即可
+vncserver 使用RDP协议无线连接桌面 sudo apt install tightvncserver xrdp 安装tightvncserver将会自动卸载realvnc
+安装phpMyAdmin环境 安装nginx,php-fpm,mairadb
+sudo apt install nginx php-fpm mariadb-server 配置数据库
+安全设置 sudo mysql_secure_installation 登录 mysql -uroot -p 报错，错误信息为：ERROR 1698 (28000): Access denied for user &lsquo;root&rsquo;@&rsquo;localhost&rsquo;
+解决方案：
+sudo mysql -uroot -p update mysql.user set authentication_string=PASSWORD('root'), plugin='mysql_native_password' where user='root'; flush privileges; 配置nginx以支持php
+sudo vim /etc/nginx/sites-available/default ----------------------------------- location / { index index."><meta name=author content><link rel=canonical href=https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E6%A0%91%E8%8E%93%E6%B4%BE%E9%85%8D%E7%BD%AE/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.luanrz.cn/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.luanrz.cn/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.luanrz.cn/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.luanrz.cn/apple-touch-icon.png><link rel=mask-icon href=https://blog.luanrz.cn/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><meta property="og:title" content="树莓派配置"><meta property="og:description" content="树莓派配置, 包括常用开发环境及部分实用工具的安装与配置
+安装raspbian系统至SD卡 略
+选择国内仓库源 sudo sed -i 's#://raspbian.raspberrypi.org#s://mirrors.ustc.edu.cn/raspbian#g' /etc/apt/sources.list sudo sed -i 's#://archive.raspberrypi.org/debian#s://mirrors.ustc.edu.cn/archive.raspberrypi.org/debian#g' /etc/apt/sourceslist.d/raspi.list 参见链接树莓派—raspbian软件源（全）
+使用VNC协议无线连接桌面 系统已经默认安装RealVNC,直接启动即可
+vncserver 使用RDP协议无线连接桌面 sudo apt install tightvncserver xrdp 安装tightvncserver将会自动卸载realvnc
+安装phpMyAdmin环境 安装nginx,php-fpm,mairadb
+sudo apt install nginx php-fpm mariadb-server 配置数据库
+安全设置 sudo mysql_secure_installation 登录 mysql -uroot -p 报错，错误信息为：ERROR 1698 (28000): Access denied for user &lsquo;root&rsquo;@&rsquo;localhost&rsquo;
+解决方案：
+sudo mysql -uroot -p update mysql.user set authentication_string=PASSWORD('root'), plugin='mysql_native_password' where user='root'; flush privileges; 配置nginx以支持php
+sudo vim /etc/nginx/sites-available/default ----------------------------------- location / { index index."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E6%A0%91%E8%8E%93%E6%B4%BE%E9%85%8D%E7%BD%AE/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2018-12-12T21:57:00+00:00"><meta property="article:modified_time" content="2018-12-12T21:57:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="树莓派配置"><meta name=twitter:description content="树莓派配置, 包括常用开发环境及部分实用工具的安装与配置
+安装raspbian系统至SD卡 略
+选择国内仓库源 sudo sed -i 's#://raspbian.raspberrypi.org#s://mirrors.ustc.edu.cn/raspbian#g' /etc/apt/sources.list sudo sed -i 's#://archive.raspberrypi.org/debian#s://mirrors.ustc.edu.cn/archive.raspberrypi.org/debian#g' /etc/apt/sourceslist.d/raspi.list 参见链接树莓派—raspbian软件源（全）
+使用VNC协议无线连接桌面 系统已经默认安装RealVNC,直接启动即可
+vncserver 使用RDP协议无线连接桌面 sudo apt install tightvncserver xrdp 安装tightvncserver将会自动卸载realvnc
+安装phpMyAdmin环境 安装nginx,php-fpm,mairadb
+sudo apt install nginx php-fpm mariadb-server 配置数据库
+安全设置 sudo mysql_secure_installation 登录 mysql -uroot -p 报错，错误信息为：ERROR 1698 (28000): Access denied for user &lsquo;root&rsquo;@&rsquo;localhost&rsquo;
+解决方案：
+sudo mysql -uroot -p update mysql.user set authentication_string=PASSWORD('root'), plugin='mysql_native_password' where user='root'; flush privileges; 配置nginx以支持php
+sudo vim /etc/nginx/sites-available/default ----------------------------------- location / { index index."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.luanrz.cn/posts/"},{"@type":"ListItem","position":2,"name":"树莓派配置","item":"https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E6%A0%91%E8%8E%93%E6%B4%BE%E9%85%8D%E7%BD%AE/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"树莓派配置","name":"树莓派配置","description":"树莓派配置, 包括常用开发环境及部分实用工具的安装与配置\n安装raspbian系统至SD卡 略\n选择国内仓库源 sudo sed -i \u0026#39;s#://raspbian.raspberrypi.org#s://mirrors.ustc.edu.cn/raspbian#g\u0026#39; /etc/apt/sources.list sudo sed -i \u0026#39;s#://archive.raspberrypi.org/debian#s://mirrors.ustc.edu.cn/archive.raspberrypi.org/debian#g\u0026#39; /etc/apt/sourceslist.d/raspi.list 参见链接树莓派—raspbian软件源（全）\n使用VNC协议无线连接桌面 系统已经默认安装RealVNC,直接启动即可\nvncserver 使用RDP协议无线连接桌面 sudo apt install tightvncserver xrdp 安装tightvncserver将会自动卸载realvnc\n安装phpMyAdmin环境 安装nginx,php-fpm,mairadb\nsudo apt install nginx php-fpm mariadb-server 配置数据库\n安全设置 sudo mysql_secure_installation 登录 mysql -uroot -p 报错，错误信息为：ERROR 1698 (28000): Access denied for user \u0026lsquo;root\u0026rsquo;@\u0026rsquo;localhost\u0026rsquo;\n解决方案：\nsudo mysql -uroot -p update mysql.user set authentication_string=PASSWORD(\u0026#39;root\u0026#39;), plugin=\u0026#39;mysql_native_password\u0026#39; where user=\u0026#39;root\u0026#39;; flush privileges; 配置nginx以支持php\nsudo vim /etc/nginx/sites-available/default ----------------------------------- location / { index index.","keywords":["Linux"],"articleBody":"树莓派配置, 包括常用开发环境及部分实用工具的安装与配置\n安装raspbian系统至SD卡 略\n选择国内仓库源 sudo sed -i 's#://raspbian.raspberrypi.org#s://mirrors.ustc.edu.cn/raspbian#g' /etc/apt/sources.list sudo sed -i 's#://archive.raspberrypi.org/debian#s://mirrors.ustc.edu.cn/archive.raspberrypi.org/debian#g' /etc/apt/sourceslist.d/raspi.list 参见链接树莓派—raspbian软件源（全）\n使用VNC协议无线连接桌面 系统已经默认安装RealVNC,直接启动即可\nvncserver 使用RDP协议无线连接桌面 sudo apt install tightvncserver xrdp 安装tightvncserver将会自动卸载realvnc\n安装phpMyAdmin环境 安装nginx,php-fpm,mairadb\nsudo apt install nginx php-fpm mariadb-server 配置数据库\n安全设置 sudo mysql_secure_installation 登录 mysql -uroot -p 报错，错误信息为：ERROR 1698 (28000): Access denied for user ‘root’@’localhost’\n解决方案：\nsudo mysql -uroot -p update mysql.user set authentication_string=PASSWORD('root'), plugin='mysql_native_password' where user='root'; flush privileges; 配置nginx以支持php\nsudo vim /etc/nginx/sites-available/default ----------------------------------- location / { index index.html index.htm index.php default.html default.htm default.php; } location ~\\.php$ { fastcgi_pass unix:/run/php/php7.3-fpm.sock; fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; include fastcgi_params; } ----------------------------------- 配置php以支持mysql\n安装php的mysql扩展 sudo apt install php-mysql 在配置文件中加入php的mysql扩展 sudo vim /etc/php/7.3/fpm/php.ini ----------------------------------- extension=mysqli ;去掉注释 ----------------------------------- 安装phpMyAdmin\ncd ~/Downloads wget https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.tar.gz tar zxvf phpMyAdmin-latest-all-languages.tar.gz sudo mv phpMyAdmin-*-all-languages /var/www/html/pma 安装tomcat环境 安装jdk环境\nsudo apt install openjdk-8-jdk 下载tomcat8.5.42并解压至/usr/local/java目录下\ncd ~/Downloads wget https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-8/v8.5.42/bin/apache-tomcat-8.5.42.tar.gz tar zxf apache-tomcat-8.5.42.tar.gz sudo mkdir /usr/local/java sudo mv apache-tomcat-8.5.42 /usr/local/java/tomcat 设置开机自启动tomcat\nsudo vim /etc/rc.local ----------------------------------- /usr/local/java/tomcat/bin/startup.sh # 在exit 0前加入tomcat启动文件 ----------------------------------- 配置无线静态IP 编辑dhcpcd.conf文件\nsudo vim /etc/dhcpcd.conf ----------------------------------- interface wlan0 static ip_address=192.168.0.200/24 static routers=192.168.0.1 static domain_name_server=114.114.114.114 ----------------------------------- 安装花生壳实现内网穿透 下载安装花生壳\ncd ~/Downloads wget http://download.oray.com/peanuthull/embed/phddns_3.0.3_systemd.deb sudo dpkg -i phddns_3.0.3_systemd.deb 安装ftp服务器实现文件共享 安装vsftp\nsudo apt install vsftpd 配置vsftp\nsudo vim /etc/vsftpd.conf ----------------------------------- write_enable=YES local_umask=022 ----------------------------------- 挂载移动硬盘\nsudo mount -o uid=pi,gid=pi /dev/sda1 ~/Public 开机后自动推送IP至邮箱 安装邮件客户端\nsudo apt install msmtp mutt 配置msmtp\nvim .msmtprc ----------------------------------- account default host smtp.qq.com from luanrzh@qq.com auth plain user luanrzh@qq.com password mfnamealwuktbabi logfile /var/log/msmtp.log ----------------------------------- .msmtprc初始权限会报错：msmtp: /home/pi/.msmtprc: contains secrets and therefore must have no more than user read/write permissions\n修改.msmtprc文件权限\nchmod 600 .msmtprc 配置mutt\nvim .muttrc ----------------------------------- set sendmail=\"/usr/bin/msmtp\" set use_from=yes set from=\"luanrzh@qq.com\" set realname=\"pi\" set editor=\"vim\" ----------------------------------- 新增\"获取IP并发邮件\"的脚本\nvim send-ip-mail.sh ----------------------------------- #!/bin/bash # check network availability while true do TIMEOUT=5 SITE_TO_CHECK=\"https://www.126.com/\" RET_CODE=`curl -I -s --connect-timeout $TIMEOUT $SITE_TO_CHECK -w %{http_code} | tail -n1` if [ \"x$RET_CODE\" = \"x200\" ]; then echo \"Network OK, will send mail...\" break else echo \"Network not ready, wait...\" sleep 1s fi done # get the IP address of eth0, e.g. \"192.168.16.5\" ETH0_IP_ADDR=`ifconfig eth0 | sed -n \"2,2p\" | awk '{print substr($2,1)}'` WLAN0_IP_ADDR=`ifconfig wlan0 | sed -n \"2,2p\" | awk '{print substr($2,1)}'` # send the Email echo -e \"有线:${ETH0_IP_ADDR}\\n无线:${WLAN0_IP_ADDR}\" | mutt -s \" 树莓派IP\" luanrzh@qq.com ----------------------------------- 编写 开机运行脚本\nsudo vim /etc/rc.local ----------------------------------- #... /home/pi/send-ip-mail.sh \u003e\u003e /home/pi/send-ip-mail.log 2\u003e\u00261 exit 0 ----------------------------------- 上述脚本是以root用户执行，当前/root目录下还没有msmtp和mutt的配置文件\n复制配置文件至/root目录下\nsudo cp .msmtprc /root sudo cp .muttrc /root ","wordCount":"370","inLanguage":"en","datePublished":"2018-12-12T21:57:00Z","dateModified":"2018-12-12T21:57:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/%E6%A0%91%E8%8E%93%E6%B4%BE%E9%85%8D%E7%BD%AE/"},"publisher":{"@type":"Organization","name":"luanrz's blog","logo":{"@type":"ImageObject","url":"https://blog.luanrz.cn/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.luanrz.cn/ accesskey=h title="luanrz's blog (Alt + H)">luanrz's blog</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.luanrz.cn/ title=首页><span>首页</span></a></li><li><a href=https://blog.luanrz.cn/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li><li><a href=https://blog.luanrz.cn/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.luanrz.cn/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.luanrz.cn/tags/ title=标签><span>标签</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class=post-title>树莓派配置</h1></header><div class=post-content><p>树莓派配置, 包括常用开发环境及部分实用工具的安装与配置</p><h2 id=安装raspbian系统至sd卡>安装raspbian系统至SD卡<a hidden class=anchor aria-hidden=true href=#安装raspbian系统至sd卡>#</a></h2><p>略</p><h2 id=选择国内仓库源>选择国内仓库源<a hidden class=anchor aria-hidden=true href=#选择国内仓库源>#</a></h2><pre tabindex=0><code>sudo sed -i &#39;s#://raspbian.raspberrypi.org#s://mirrors.ustc.edu.cn/raspbian#g&#39; /etc/apt/sources.list
+sudo sed -i &#39;s#://archive.raspberrypi.org/debian#s://mirrors.ustc.edu.cn/archive.raspberrypi.org/debian#g&#39; /etc/apt/sourceslist.d/raspi.list
+</code></pre><blockquote><p>参见链接<a href=https://www.jianshu.com/p/67b9e6ebf8a0 title=作者：qcsunny>树莓派—raspbian软件源（全）</a></p></blockquote><h2 id=使用vnc协议无线连接桌面>使用VNC协议无线连接桌面<a hidden class=anchor aria-hidden=true href=#使用vnc协议无线连接桌面>#</a></h2><p>系统已经默认安装RealVNC,直接启动即可</p><pre tabindex=0><code>vncserver
+</code></pre><h2 id=使用rdp协议无线连接桌面>使用RDP协议无线连接桌面<a hidden class=anchor aria-hidden=true href=#使用rdp协议无线连接桌面>#</a></h2><pre tabindex=0><code>sudo apt install tightvncserver xrdp
+</code></pre><blockquote><p>安装tightvncserver将会自动卸载realvnc</p></blockquote><h2 id=安装phpmyadmin环境>安装phpMyAdmin环境<a hidden class=anchor aria-hidden=true href=#安装phpmyadmin环境>#</a></h2><ol><li><p>安装nginx,php-fpm,mairadb</p><pre tabindex=0><code>sudo apt install nginx php-fpm mariadb-server
+</code></pre></li><li><p>配置数据库</p><ul><li>安全设置</li></ul><pre tabindex=0><code>sudo mysql_secure_installation
+</code></pre><ul><li>登录</li></ul><pre tabindex=0><code>mysql -uroot -p
+</code></pre><blockquote><p>报错，错误信息为：ERROR 1698 (28000): Access denied for user &lsquo;root&rsquo;@&rsquo;localhost&rsquo;</p></blockquote><p>解决方案：</p><pre tabindex=0><code>sudo mysql -uroot -p
+update mysql.user set authentication_string=PASSWORD(&#39;root&#39;), plugin=&#39;mysql_native_password&#39; where user=&#39;root&#39;;
+flush privileges;
+</code></pre></li><li><p>配置nginx以支持php</p><pre tabindex=0><code>sudo vim /etc/nginx/sites-available/default
+</code></pre><pre tabindex=0><code>-----------------------------------
+location / {
+    index  index.html index.htm index.php default.html default.htm default.php;
+}
+location ~\.php$ {
+    fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    include fastcgi_params;
+}
+-----------------------------------
+</code></pre></li><li><p>配置php以支持mysql</p><ul><li>安装php的mysql扩展</li></ul><pre tabindex=0><code>sudo apt install php-mysql
+</code></pre><ul><li>在配置文件中加入php的mysql扩展</li></ul><pre tabindex=0><code>sudo vim /etc/php/7.3/fpm/php.ini
+</code></pre><pre tabindex=0><code>-----------------------------------
+extension=mysqli ;去掉注释
+-----------------------------------
+</code></pre></li><li><p>安装phpMyAdmin</p><pre tabindex=0><code>cd ~/Downloads
+wget https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.tar.gz
+tar zxvf phpMyAdmin-latest-all-languages.tar.gz
+sudo mv phpMyAdmin-*-all-languages /var/www/html/pma
+</code></pre></li></ol><h2 id=安装tomcat环境>安装tomcat环境<a hidden class=anchor aria-hidden=true href=#安装tomcat环境>#</a></h2><ol><li><p>安装jdk环境</p><pre tabindex=0><code>sudo apt install openjdk-8-jdk
+</code></pre></li><li><p>下载tomcat8.5.42并解压至/usr/local/java目录下</p><pre tabindex=0><code>cd ~/Downloads
+wget https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-8/v8.5.42/bin/apache-tomcat-8.5.42.tar.gz
+tar zxf apache-tomcat-8.5.42.tar.gz
+sudo mkdir /usr/local/java
+sudo mv apache-tomcat-8.5.42 /usr/local/java/tomcat
+</code></pre></li><li><p>设置开机自启动tomcat</p><pre tabindex=0><code>sudo vim /etc/rc.local
+</code></pre><pre tabindex=0><code>-----------------------------------
+/usr/local/java/tomcat/bin/startup.sh
+# 在exit 0前加入tomcat启动文件
+-----------------------------------
+</code></pre></li></ol><h2 id=配置无线静态ip>配置无线静态IP<a hidden class=anchor aria-hidden=true href=#配置无线静态ip>#</a></h2><ol><li><p>编辑dhcpcd.conf文件</p><pre tabindex=0><code>sudo vim /etc/dhcpcd.conf
+</code></pre><pre tabindex=0><code>-----------------------------------
+interface wlan0
+static ip_address=192.168.0.200/24
+static routers=192.168.0.1
+static domain_name_server=114.114.114.114
+-----------------------------------
+</code></pre></li></ol><h2 id=安装花生壳实现内网穿透>安装花生壳实现内网穿透<a hidden class=anchor aria-hidden=true href=#安装花生壳实现内网穿透>#</a></h2><ol><li><p>下载安装花生壳</p><pre tabindex=0><code>cd ~/Downloads
+wget http://download.oray.com/peanuthull/embed/phddns_3.0.3_systemd.deb
+sudo dpkg -i phddns_3.0.3_systemd.deb
+</code></pre></li></ol><h2 id=安装ftp服务器实现文件共享>安装ftp服务器实现文件共享<a hidden class=anchor aria-hidden=true href=#安装ftp服务器实现文件共享>#</a></h2><ol><li><p>安装vsftp</p><pre tabindex=0><code>sudo apt install vsftpd
+</code></pre></li><li><p>配置vsftp</p><pre tabindex=0><code>sudo vim /etc/vsftpd.conf
+</code></pre><pre tabindex=0><code>-----------------------------------
+write_enable=YES
+local_umask=022
+-----------------------------------
+</code></pre></li><li><p>挂载移动硬盘</p><pre tabindex=0><code>sudo mount -o uid=pi,gid=pi /dev/sda1 ~/Public
+</code></pre></li></ol><h2 id=开机后自动推送ip至邮箱>开机后自动推送IP至邮箱<a hidden class=anchor aria-hidden=true href=#开机后自动推送ip至邮箱>#</a></h2><ol><li><p>安装邮件客户端</p><pre tabindex=0><code>sudo apt install msmtp mutt
+</code></pre></li><li><p>配置msmtp</p><pre tabindex=0><code>vim .msmtprc
+</code></pre><pre tabindex=0><code>-----------------------------------
+account default
+host smtp.qq.com
+from luanrzh@qq.com
+auth plain
+user luanrzh@qq.com
+password mfnamealwuktbabi
+logfile /var/log/msmtp.log
+-----------------------------------
+</code></pre><blockquote><p>.msmtprc初始权限会报错：msmtp: /home/pi/.msmtprc: contains secrets and therefore must have no more than user read/write permissions</p></blockquote></li><li><p>修改.msmtprc文件权限</p><pre tabindex=0><code>chmod 600 .msmtprc
+</code></pre></li><li><p>配置mutt</p><pre tabindex=0><code>vim .muttrc
+</code></pre><pre tabindex=0><code>-----------------------------------
+set sendmail=&#34;/usr/bin/msmtp&#34;
+set use_from=yes
+set from=&#34;luanrzh@qq.com&#34;
+set realname=&#34;pi&#34;
+set editor=&#34;vim&#34;
+-----------------------------------
+</code></pre></li><li><p>新增"获取IP并发邮件"的<a href=http://shumeipai.nxez.com/2014/03/18/let-raspberry-pi-ip-address-is-automatically-reported-to-the-mailbox.html>脚本</a></p><pre tabindex=0><code>vim send-ip-mail.sh
+</code></pre><pre tabindex=0><code>-----------------------------------
+#!/bin/bash
+
+# check network availability
+while true
+do
+TIMEOUT=5
+SITE_TO_CHECK=&#34;https://www.126.com/&#34;
+RET_CODE=`curl -I -s --connect-timeout $TIMEOUT $SITE_TO_CHECK -w %{http_code} | tail -n1`
+if [ &#34;x$RET_CODE&#34; = &#34;x200&#34; ]; then
+echo &#34;Network OK, will send mail...&#34;
+break
+else
+echo &#34;Network not ready, wait...&#34;
+sleep 1s
+fi
+done
+
+# get the IP address of eth0, e.g. &#34;192.168.16.5&#34;
+ETH0_IP_ADDR=`ifconfig eth0 | sed -n &#34;2,2p&#34; | awk &#39;{print substr($2,1)}&#39;`
+WLAN0_IP_ADDR=`ifconfig wlan0 | sed -n &#34;2,2p&#34; | awk &#39;{print substr($2,1)}&#39;`
+
+# send the Email
+echo -e &#34;有线:${ETH0_IP_ADDR}\n无线:${WLAN0_IP_ADDR}&#34; | mutt -s &#34; 树莓派IP&#34; luanrzh@qq.com
+-----------------------------------
+</code></pre></li><li><p>编写 开机运行脚本</p><pre tabindex=0><code>sudo vim  /etc/rc.local
+</code></pre><pre tabindex=0><code>-----------------------------------
+#...
+/home/pi/send-ip-mail.sh &gt;&gt; /home/pi/send-ip-mail.log 2&gt;&amp;1
+exit 0
+----------------------------------- 
+</code></pre><blockquote><p>上述脚本是以root用户执行，当前/root目录下还没有msmtp和mutt的配置文件</p></blockquote></li><li><p>复制配置文件至/root目录下</p><pre tabindex=0><code>sudo cp .msmtprc /root
+sudo cp .muttrc /root
+</code></pre></li></ol></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.luanrz.cn/tags/linux/>Linux</a></li></ul><nav class=paginav><a class=prev href=https://blog.luanrz.cn/posts/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java%E6%96%87%E4%BB%B6%E6%B5%81%E4%B8%8E%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%E7%9A%84%E7%BB%BC%E5%90%88%E8%BF%90%E7%94%A8%E7%94%A8%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%8C%E6%88%90%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/><span class=title>« Prev</span><br><span>Java文件流与策略模式的综合运用：用两种方式完成文件读写操作</span></a>
+<a class=next href=https://blog.luanrz.cn/posts/%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/vim%E9%85%8D%E7%BD%AE/><span class=title>Next »</span><br><span>Vim配置</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.luanrz.cn/>luanrz's blog</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
