@@ -32,11 +32,25 @@ git log --author=rzluan --after="2019-11-01 00:00:00" --before="2019-11-30 23:59
 
 3. 强制推送至远程仓库：`git push <remote> <branch> -f`
 
-## 撤销commit
+## 撤销commit记录
 
-1. `1git reset HEAD` : 撤销commit，撤销暂存区，工作空间代码改动不变
+1. `git reset HEAD` : 撤销commit，撤销暂存区，工作空间代码改动不变
 2. `git reset --mixed HEAD^` : 同上
 3. `git reset --soft HEAD^` : 撤销commit，暂存区不变，工作空间代码改动不变
 4. `git reset --hard HEAD^` : 撤销commit，清空暂存区，清空工作空间代码改变
 5. `git reset HEAD~n` : 撤销n次commit
 6. `git commit --amend` : 修改commit注释
+
+## 清除所有commit记录
+
+> 参见[Git – Remove All Commits – Clear Git History (Local & Remote)](https://www.shellhacks.com/git-remove-all-commits-clear-git-history-local-remote/)
+
+```shell
+git checkout --orphan temp_branch # 切换到一个临时分支，该分支的状态和`git init`很像
+# 在一步可以做一些特殊操作，如删除当前文件夹下所有文件、新增文件等等，后续新分支将会以此处的文件状态为准
+git add -A # 提交工作区中所有文件变动，到临时分支暂存区
+git commit -am "The first commit" # 提交暂存区中所有文件变动，到临时分支本地仓库
+git branch -D main # 删除需要清除所有commit记录的分支
+git branch -m main # 将当前临时分支修改成刚刚删掉的分支名
+$ git push -f origin main # 推送到远程仓库（！！！危险操作！！！）
+```
