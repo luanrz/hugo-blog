@@ -44,14 +44,9 @@ tags:
 *** 数据结构与算法
 
 ** 开发框架
-*** Spring
-*** SpringMVC
-*** SpringBoot
-*** SpringCloud
-*** SpringDataJPA
-*** Hibernate
-*** Mybatis
-*** Dubbo
+*** Spring(SpringMVC、SpringBoot、SpringCloud、SpringDataJPA)
+*** 数据库(Hibernate、Mybatis)
+*** 服务调用(Dubbo)
 
 ** 数据库
 *** 数据库基础
@@ -73,7 +68,7 @@ tags:
 **** Nginx
 **** Tomcat
 **** Jboss
-*** 日志
+*** 搜索引擎
 **** Elasticsearch
 *** 协调服务
 **** ZooKeeper
@@ -89,20 +84,40 @@ tags:
 *** CI/CD
 **** Jenkins
 
-** 架构设计
-*** 微服务
-**** 服务治理
+** 分布式架构
+*** 基础概念
+**** CAP
+***** 一致性(Consistency)
+***** 可用性(Availability)
+***** 分区容错性(Partition tolerance)
+**** 三高
+***** 高并发
+***** 高性能
+***** 高可用
+*** 分布式服务(微服务治理)
 **** 服务注册与发现
-*** 高并发
-**** 高性能
-**** 高可用
-*** 分布式
-**** 分布式服务
-***** RPC
-**** 分布式锁
-**** 分布式事务
-**** 分布式缓存
-**** 分布式存储
+***** Nacos
+***** Eureka
+**** 服务调用
+***** Feign
+***** RPC(Dubbo)
+**** 负载均衡
+***** SpringCloudLoadBalancer
+***** Ribbon
+**** 配置管理
+***** SpringCloudConfig
+***** Nacos
+**** 网关
+***** SpringCloudGateway
+***** Zuul
+**** 熔断降级
+***** SpringCloudCircuitBreaker
+***** Sentinel
+***** Hystrix
+***** Resilience4j
+*** 分布式缓存
+*** 分布式事务
+*** 分布式锁
 
 ** 工具
 *** Git

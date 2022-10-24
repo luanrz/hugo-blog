@@ -200,7 +200,7 @@ vim ~/.config/i3/config
 
 ```shell
 ------------------------------------------
-## 将mod设置为Win键
+## 将mod设置为Alt键
 set $mod Mod1
 
 ## 设置标题字体
@@ -245,6 +245,6 @@ bindsym $mod+Shift+minus move scratchpad
 ## 绑定便签本：呼出第一个便笺本
 bindsym $mod+minus scratchpad show 
 ## 绑定锁屏功能
-bindsym Mod4+l exec --no-startup-id /data/doc/synology/drive/Note/shell/bak/i3exit.sh lock
+bindsym Mod4+l exec --no-startup-id ~/i3exit.sh lock
 ------------------------------------------
 ```
