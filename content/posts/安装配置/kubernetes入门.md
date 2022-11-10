@@ -138,7 +138,7 @@ minikube是一个入门级的单节点kubernetes集群，麻雀虽小，五脏�
 - **查看容器日志**
 
     ```shell
-    kubectl describe pods
+    kubectl logs $POD_NAME # POD_NAME在前面定义了
     ```
 
     > 容器启动了才会有日志    
