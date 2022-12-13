@@ -45,8 +45,8 @@ params:
   ShowCodeCopyButtons: true # 显示代码中的复制按钮
   ShowPostNavLinks: true # 显示文章中上一篇和下一篇的链接
   ShowBreadCrumbs: false # 显示面包屑导航
-  showtoc: false # 显示目录
-  tocopen: false # 显示的目录默认处于打开状态（showtoc为true才有意义）
+  showtoc: true # 显示目录
+  tocopen: true # 显示的目录默认处于打开状态（showtoc为true才有意义）
   label:
     text: "luanrz's blog" # 左上角logo区域的文字，如果不填将以全局的title值为准
 
