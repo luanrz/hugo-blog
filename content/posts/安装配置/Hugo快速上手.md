@@ -1,6 +1,12 @@
 ---
 title: "Hugo快速上手"
 date: 2022-10-17T20:50:15+08:00
+categories:
+- 安装配置
+- 应用软件
+tags: 
+- Linux
+- Golang
 ---
 
 Hugo是使用Go语言实现的静态博客生成工具，它的构建速度比Hexo更快。

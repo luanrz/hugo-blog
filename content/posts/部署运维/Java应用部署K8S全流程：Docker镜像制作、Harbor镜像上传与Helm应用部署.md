@@ -2,12 +2,12 @@
 title: "Java应用部署K8S全流程：Docker镜像制作、Harbor镜像存储与Helm应用部署"
 date: 2022-12-11T11:01:19+08:00
 categories:
-- 安装配置
-- 应用软件
+- 部署运维
 tags:
-- k8s
-- docker
+- K8S
+- Docker
 - Java
+- Golang
 ---
 
 ## 一、前言

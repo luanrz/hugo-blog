@@ -1,12 +1,12 @@
 ---
-title: kubernetes入门
+title: Kubernetes入门
 date: 2022-07-01 11:30:48
 categories:
-- 安装配置
-- 应用软件
+- 部署运维
 tags:
-- k8s
-- docker
+- K8S
+- Docker
+- Golang
 ---
 
 kubernetes（k8s）是容器编排的利器。
